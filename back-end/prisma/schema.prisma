@@ -1,0 +1,62 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id           Int           @id @default(autoincrement())
+    username     String        @unique
+    password     String
+    email        String        @unique
+    createdAt    DateTime      @default(now())
+    sessions     Session[]
+    transactions Transaction[]
+    UserDebt     UserDebt[]
+    UserCredit   UserCredit[]
+}
+
+model Session {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    token     String
+    createdAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+    id          Int      @id @default(autoincrement())
+    userId      Int
+    description String
+    amount      Float
+    date        DateTime @default(now())
+    category    String?
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+model UserDebt {
+    id        Int       @id @default(autoincrement())
+    userId    Int
+    creditor  String?
+    amount    Float
+    createdAt DateTime  @default(now())
+    payDate   DateTime?
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+model UserCredit {
+    id        Int       @id @default(autoincrement())
+    userId    Int
+    debtor    String?
+    amount    Float
+    createdAt DateTime  @default(now())
+    payDate   DateTime?
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+generator client {
+    provider = "prisma-client-js"
+}

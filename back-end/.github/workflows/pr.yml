@@ -1,0 +1,29 @@
+name: Node.js Tests on Pull Request
+
+on: [pull_request]
+
+jobs:
+  PullRequest-GitHub:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3 # Fetches the code of the repository
+
+      - name: Set Up Environment Variables
+        uses: SpicyPizza/create-envfile@v1.3 # Generates a .env file for environment variables
+        with:
+          envkey_PORT: "5000"
+          envkey_POSTGRES_HOST: db
+          envkey_POSTGRES_USER: "postgres"
+          envkey_POSTGRES_PASSWORD: "root"
+          envkey_POSTGRES_DB: "coin_manager"
+          envkey_POSTGRES_PORT: "5432"
+          envkey_DATABASE_URL: "postgresql://postgres:root@db:5432/coin_manager?schema=public"
+          file_name: .env
+
+      - name: Run Tests with Docker Compose
+        run: |
+          docker-compose -f docker-compose-test.yml run node_app \
+            npm run migration:run \
+            npm run test
