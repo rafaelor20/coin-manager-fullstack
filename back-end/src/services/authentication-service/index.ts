@@ -50,7 +50,7 @@ type SignInResult = {
   token: string;
 };
 
-type GetUserOrFailResult = Pick<User, 'id' | 'email' | 'password' | 'username'>;
+type GetUserOrFailResult = Pick<User, 'id' | 'email' | 'password'>;
 
 const authenticationService = {
   signIn,
