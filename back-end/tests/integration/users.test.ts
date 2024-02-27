@@ -35,7 +35,6 @@ describe('POST /users', () => {
     const generateValidBody = () => ({
       email: faker.internet.email(),
       password: faker.internet.password(6),
-      username: faker.name.firstName(),
     });
 
     it('should respond with status 201 and create user when given email is unique', async () => {
@@ -47,7 +46,6 @@ describe('POST /users', () => {
       expect(response.body).toEqual({
         id: expect.any(Number),
         email: body.email,
-        username: body.username,
       });
     });
 
@@ -71,7 +69,6 @@ describe('POST /users', () => {
         expect.objectContaining({
           id: response.body.id,
           email: body.email,
-          username: body.username,
         }),
       );
     });

@@ -6,7 +6,6 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "ttsc -p tsconfig.build.json",
-    "prepare": "husky install",
     "start": "node dist/server.js",
     "migration:run": "prisma migrate deploy",
     "migration:generate": "npm run dev:load-envs prisma migrate dev",
@@ -60,7 +59,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "git-commit-msg-linter": "^4.1.2",
-    "husky": "^8.0.1",
     "jest": "^26.6.3",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",

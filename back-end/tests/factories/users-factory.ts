@@ -10,7 +10,6 @@ export async function createUser(params: Partial<User> = {}): Promise<User> {
   return prisma.user.create({
     data: {
       email: params.email || faker.internet.email(),
-      username: params.username || faker.name.firstName(),
       password: hashedPassword,
     },
   });

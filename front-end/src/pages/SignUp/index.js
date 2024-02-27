@@ -12,7 +12,6 @@ import Link from '../../components/Link';
 import useSignUp from '../../hooks/api/useSignUp';
 
 export default function SignUp() {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,7 +27,7 @@ export default function SignUp() {
       toast('As senhas devem ser iguais!');
     } else {
       try {
-        await signUp(email, password, username);
+        await signUp(email, password);
         toast('Inscrito com sucesso! Por favor, faça login.');
         navigate('/');
       } catch (error) {
@@ -46,13 +45,6 @@ export default function SignUp() {
       <Row>
         <Label>Inscrição</Label>
         <form onSubmit={submit}>
-          <Input
-            label="Username"
-            type="text"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
           <Input
             label="E-mail"
             type="text"
