@@ -11,6 +11,8 @@ import Link from '../../components/Link';
 
 import useSignUp from '../../hooks/api/useSignUp';
 
+import logo from '../../assets/logo.png';
+
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,7 +41,7 @@ export default function SignUp() {
   return (
     <AuthLayout>
       <Row>
-        <img src="https://http.cat/412.jpg" alt="Event Logo" width="60px" />
+        <img src={logo} alt="Coin Manager Logo" width="60px" />
         <Title>SignUp</Title>
       </Row>
       <Row>

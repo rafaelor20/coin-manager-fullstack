@@ -11,6 +11,8 @@ import { Row, Title, Label } from '../../components/Auth';
 import UserContext from '../../contexts/UserContext';
 import useSignIn from '../../hooks/api/useSignIn';
 
+import logo from '../../assets/logo.png';
+
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +37,7 @@ export default function SignIn() {
   return (
     <AuthLayout >
       <Row>
-        <img src="https://http.cat/412.jpg" alt="Event Logo" width="60px" />
+        <img src={logo} alt="Coin Manager Logo" width="60px" />
         <Title>SignIn</Title>
       </Row>
       <Row>
