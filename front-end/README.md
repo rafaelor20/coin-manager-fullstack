@@ -1,10 +1,11 @@
-# drivent-front
+# coin-manager-frontend
 
-Front-end for Driven.t, an event management solution.
+Back-end for coin manager, a personal finance app.
 
 ## About
 
-Driven.t is a web browser application with which you can manage every single aspect of your event.
+coin manager is personal finance management app that provides a simple
+way to streamline your finances, tracking your income and expenses
 
 ## How to run for development
 

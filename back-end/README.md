@@ -1,14 +1,11 @@
-# coin manager-back-prisma
+# coin-manager-back
 
-Back-end for coin manager, an event management solution.
+Back-end for coin manager, a personal finance app.
 
 ## About
 
 coin manager is personal finance management app that provides a simple
 way to streamline your finances, tracking your income and expenses
-
-link for the frontend of the project:
-https://github.com/rafaelor20/coin-manager-front-end
 
 ## Diagram Classes
 
