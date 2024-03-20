@@ -23,3 +23,14 @@ export async function storeTransaction(req: AuthenticatedRequest, res: Response,
     next(error);
   }
 }
+
+export async function deleteTransaction(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const transactionId = Number(req.params.transactionId);
+    await transactionService.deleteTransaction({ userId, transactionId });
+    return res.status(httpStatus.OK).send();
+  } catch (error) {
+    next(error);
+  }
+}

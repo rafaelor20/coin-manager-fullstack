@@ -87,7 +87,7 @@ GET "/credits"
 Response:[
         {
           id,
-          user_id,
+          userId,
           debtor,
           amount,
           createdAt,
@@ -99,7 +99,7 @@ POST "/credits/store"
 Body: { user_id, debtor, amount, payDate }
 Response: {
         id,
-        user_id,
+        userId,
         debtor,
         amount,
         createdAt,
@@ -109,7 +109,7 @@ Response: {
 GET "/credits/:creditId"
 Response: {
         id,
-        user_id,
+        userId,
         debtor,
         amount,
         createdAt,
@@ -119,7 +119,7 @@ Response: {
 DELETE "/credits/delete/:creditId"
 Response: {
         id,
-        user_id,
+        userId,
         debtor,
         amount,
         createdAt,
@@ -130,7 +130,7 @@ GET "/debts"
 Response: [
         {
           id,
-          user_id,
+          userId,
           creditor,
           amount,
           createdAt,
@@ -141,7 +141,7 @@ Response: [
 GET "/debts/:debtId"
 Response: {
           id,
-          user_id,
+          userId,
           creditor,
           amount,
           createdAt,
@@ -149,10 +149,10 @@ Response: {
         }
 
 POST "/debts/store"
-Body: { user_id, creditor, amount, payDate }
+Body: { userId, creditor, amount, payDate }
 Response:  {
           id,
-          user_id,
+          userId,
           creditor,
           amount,
           createdAt,
@@ -162,7 +162,7 @@ Response:  {
 DELETE "/debts/delete/:debtId"
 Response: {
           id,
-          user_id,
+          userId,
           creditor,
           amount,
           createdAt,
@@ -173,7 +173,7 @@ GET "/transactions/historic"
 Response: [
         {
           id,
-          user_id,
+          userId,
           description,
           amount,
           date,
@@ -185,7 +185,7 @@ POST "/transactions/store"
 Body: { description, amount, category }
 Response: {
           id,
-          user_id,
+          userId,
           description,
           amount,
           date,

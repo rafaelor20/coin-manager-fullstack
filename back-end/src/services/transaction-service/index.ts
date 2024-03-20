@@ -1,5 +1,5 @@
 import { Transaction } from '@prisma/client';
-import { unauthorizedError, invalidAmountError, invalidDescriptionError } from '@/errors';
+import { unauthorizedError, invalidAmountError, invalidDescriptionError, notFoundError } from '@/errors';
 import transactionRepository from '@/repositories/transaction-repository';
 import userRepository from '@/repositories/user-repository';
 
@@ -10,10 +10,17 @@ async function checkUserById(id: number) {
   }
 }
 
+async function checkTransactionById(id: number) {
+  const transaction = await transactionRepository.findById(id);
+  if (!transaction) {
+    throw unauthorizedError();
+  }
+}
+
 function checkAmount(amount: number) {
   amount = Number(amount);
   if (typeof amount !== 'number' || isNaN(amount)) {
-    throw invalidAmountError();
+    throw notFoundError();
   }
 }
 
@@ -38,11 +45,18 @@ async function storeTransaction({ userId, description, amount, category }: Creat
   return transactionRepository.storeTransaction({ userId, description, amount, category });
 }
 
+async function deleteTransaction({ userId, transactionId }: DeleteTransactionParams) {
+  checkUserById(userId);
+  checkTransactionById(transactionId);
+  return transactionRepository.deleteTransaction({ transactionId });
+}
+
 export type CreateTransactionParams = Pick<Transaction, 'userId' | 'description' | 'amount' | 'category'>;
 
 const transactionService = {
   getHistoric,
   storeTransaction,
+  deleteTransaction,
 };
 
 export default transactionService;
