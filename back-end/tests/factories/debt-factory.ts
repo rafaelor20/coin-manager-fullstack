@@ -9,6 +9,7 @@ export async function createDebt(params: Partial<User> = {}): Promise<UserDebt> 
       creditor: faker.word.preposition(),
       amount: 3214,
       payDate: faker.date.soon(),
+      paid: false,
     },
   });
 }

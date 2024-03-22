@@ -9,6 +9,7 @@ export async function createCredit(params: Partial<User> = {}): Promise<UserCred
       debtor: faker.word.preposition(),
       amount: faker.datatype.number(),
       payDate: faker.date.soon(),
+      paid: false,
     },
   });
 }

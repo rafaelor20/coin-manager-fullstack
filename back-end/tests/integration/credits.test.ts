@@ -74,6 +74,7 @@ describe('GET /credits', () => {
             userId: credit.userId,
             debtor: expect.any(String),
             amount: expect.any(Number),
+            paid: expect.any(Boolean),
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
             payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           }),
@@ -151,6 +152,7 @@ describe('POST /credits/store', () => {
         userId: credit.userId,
         debtor: credit.debtor,
         amount: credit.amount,
+        paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
       });
@@ -196,6 +198,7 @@ describe('GET /credits/:creditId', () => {
         userId: credit.userId,
         debtor: credit.debtor,
         amount: credit.amount,
+        paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
       });
@@ -242,6 +245,7 @@ describe('DELETE /credits/delete/:creditId', () => {
         userId: credit.userId,
         debtor: credit.debtor,
         amount: credit.amount,
+        paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
       });
