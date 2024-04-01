@@ -8,6 +8,8 @@ export function loadEnv() {
     path = '.env.test';
   } else if (process.env.NODE_ENV === 'development') {
     path = '.env.development';
+  } else if (process.env.NODE_ENV === 'local') {
+    path = '.env.local';
   }
 
   const currentEnvs = dotenv.config({ path });
