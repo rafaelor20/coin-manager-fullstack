@@ -8,10 +8,11 @@ model User {
     password     String
     email        String        @unique
     createdAt    DateTime      @default(now())
+    amount       Float         @default(0)
     sessions     Session[]
     transactions Transaction[]
-    UserDebt     UserDebt[]
-    UserCredit   UserCredit[]
+    Debts        Debt[]
+    Credits      Credit[]
 }
 
 model Session {
@@ -26,34 +27,36 @@ model Session {
 model Transaction {
     id          Int      @id @default(autoincrement())
     userId      Int
-    description String
+    entity      String?
+    description String?
     amount      Float
-    date        DateTime @default(now())
-    category    String?
+    createdAt   DateTime @default(now())
 
     user User @relation(fields: [userId], references: [id])
 }
 
-model UserDebt {
-    id        Int       @id @default(autoincrement())
-    userId    Int
-    creditor  String?
-    amount    Float
-    createdAt DateTime  @default(now())
-    paid      Boolean   @default(false)
-    payDate   DateTime?
+model Debt {
+    id          Int       @id @default(autoincrement())
+    userId      Int
+    description String?
+    creditor    String?
+    amount      Float
+    createdAt   DateTime  @default(now())
+    paid        Boolean   @default(false)
+    payDate     DateTime?
 
     user User @relation(fields: [userId], references: [id])
 }
 
-model UserCredit {
-    id        Int       @id @default(autoincrement())
-    userId    Int
-    debtor    String?
-    amount    Float
-    createdAt DateTime  @default(now())
-    paid      Boolean   @default(false)
-    payDate   DateTime?
+model Credit {
+    id          Int       @id @default(autoincrement())
+    userId      Int
+    description String?
+    debtor      String?
+    amount      Float
+    createdAt   DateTime  @default(now())
+    paid        Boolean   @default(false)
+    payDate     DateTime?
 
     user User @relation(fields: [userId], references: [id])
 }
