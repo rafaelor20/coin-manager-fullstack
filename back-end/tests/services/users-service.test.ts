@@ -12,6 +12,30 @@ beforeAll(async () => {
 });
 
 describe('createUser', () => {
+  it('should throw ValidationError if email is not valid', async () => {
+    try {
+      await userService.createUser({
+        email: faker.lorem.word(),
+        password: faker.internet.password(6),
+      });
+      fail('should throw ValidationError');
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+    }
+  });
+
+  it('should throw ValidationError if password is not valid', async () => {
+    try {
+      await userService.createUser({
+        email: faker.internet.email(),
+        password: faker.lorem.word(5),
+      });
+      fail('should throw ValidationError');
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+    }
+  });
+
   it('should throw duplicatedUserError if there is a user with given email', async () => {
     const existingUser = await createUserSeed();
 
