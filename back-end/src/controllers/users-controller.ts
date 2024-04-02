@@ -11,6 +11,14 @@ export async function usersPost(req: Request, res: Response) {
       email: user.email,
     });
   } catch (error) {
+    if (error.name === 'DuplicatedEmailError') {
+      return res.status(httpStatus.CONFLICT).send(error.message);
+    }
+
+    if (error.name === 'ValidationError') {
+      return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message);
+    }
+
     return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }

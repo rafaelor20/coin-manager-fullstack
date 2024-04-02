@@ -17,16 +17,24 @@ afterAll(async () => {
 const server = supertest(app);
 
 describe('POST /users', () => {
-  it('should respond with status 400 when body is not given', async () => {
-    const response = await server.post('/users');
+  it('should respond with status 422 when email is not valid', async () => {
+    const body = {
+      email: faker.lorem.word(),
+      password: faker.internet.password(6),
+    };
+
+    const response = await server.post('/users').send(body);
 
     expect(response.status).toBe(httpStatus.BAD_REQUEST);
   });
 
-  it('should respond with status 400 when body is not valid', async () => {
-    const invalidBody = { [faker.lorem.word()]: faker.lorem.word() };
+  it('should respond with status 422 when password is not valid', async () => {
+    const body = {
+      email: faker.internet.email(),
+      password: faker.lorem.word(5),
+    };
 
-    const response = await server.post('/users').send(invalidBody);
+    const response = await server.post('/users').send(body);
 
     expect(response.status).toBe(httpStatus.BAD_REQUEST);
   });
@@ -37,16 +45,13 @@ describe('POST /users', () => {
       password: faker.internet.password(6),
     });
 
-    it('should respond with status 201 and create user when given email is unique', async () => {
+    it('should not register user with duplicated email', async () => {
       const body = generateValidBody();
+      await prisma.user.create({ data: body });
 
       const response = await server.post('/users').send(body);
 
-      expect(response.status).toBe(httpStatus.CREATED);
-      expect(response.body).toEqual({
-        id: expect.any(Number),
-        email: body.email,
-      });
+      expect(response.status).toBe(httpStatus.CONFLICT);
     });
 
     it('should not return user password on body', async () => {
