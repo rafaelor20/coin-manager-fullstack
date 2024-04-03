@@ -58,33 +58,27 @@ describe('POST /auth/sign-in', () => {
     });
 
     describe('when credentials are valid', () => {
-      it('should respond with status 200', async () => {
+      it('should respond with status 200 and user data', async () => {
+        const body = generateValidBody();
+        const user = await createUser(body);
+
+        const response = await server.post('/auth/sign-in').send(body);
+
+        expect(response.status).toBe(httpStatus.OK);
+        expect(response.body).toEqual({
+          token: expect.any(String),
+          id: user.id,
+          email: user.email,
+        });
+      });
+
+      it('should respond with status 200 and session token', async () => {
         const body = generateValidBody();
         await createUser(body);
 
         const response = await server.post('/auth/sign-in').send(body);
 
         expect(response.status).toBe(httpStatus.OK);
-      });
-
-      it('should respond with user data', async () => {
-        const body = generateValidBody();
-        const user = await createUser(body);
-
-        const response = await server.post('/auth/sign-in').send(body);
-
-        expect(response.body.user).toEqual({
-          id: user.id,
-          email: user.email,
-        });
-      });
-
-      it('should respond with session token', async () => {
-        const body = generateValidBody();
-        await createUser(body);
-
-        const response = await server.post('/auth/sign-in').send(body);
-
         expect(response.body.token).toBeDefined();
       });
     });

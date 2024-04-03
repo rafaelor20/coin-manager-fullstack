@@ -8,7 +8,11 @@ export async function signInPost(req: Request, res: Response) {
   try {
     const result = await authenticationService.signIn({ email, password });
 
-    return res.status(httpStatus.OK).send(result);
+    return res.status(httpStatus.OK).json({
+      token: result.token,
+      id: result.user.id,
+      email: result.user.email,
+    });
   } catch (error) {
     return res.status(httpStatus.UNAUTHORIZED).send({});
   }
