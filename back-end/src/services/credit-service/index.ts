@@ -1,4 +1,4 @@
-import { UserCredit } from '@prisma/client';
+import { Credit } from '@prisma/client';
 import moment from 'moment';
 import { unauthorizedError, invalidAmountError, invalidPayDateError, invalidDebtorError } from '@/errors';
 import creditRepository from '@/repositories/credit-repository';
@@ -63,7 +63,7 @@ async function removeCredit(userId: number, creditId: number) {
   return creditRepository.removeCreditById(creditId);
 }
 
-export type CreateCreditParams = Pick<UserCredit, 'userId' | 'debtor' | 'amount' | 'payDate'>;
+export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | 'payDate'>;
 
 const creditService = {
   getCredits,

@@ -72,6 +72,7 @@ describe('GET /credits', () => {
           expect.objectContaining({
             id: expect.any(Number),
             userId: credit.userId,
+            description: expect.any(String),
             debtor: expect.any(String),
             amount: expect.any(Number),
             paid: expect.any(Boolean),

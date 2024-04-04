@@ -9,7 +9,10 @@ export async function getCredits(req: AuthenticatedRequest, res: Response, next:
     const credits = await creditService.getCredits(userId);
     return res.status(httpStatus.OK).send(credits);
   } catch (error) {
-    next(error);
+    if (error.message === 'UnauthorizedError') {
+      return res.status(httpStatus.UNAUTHORIZED).send({ error: error.message });
+    }
+    return res.status(httpStatus.BAD_REQUEST).send({ error: error.message });
   }
 }
 

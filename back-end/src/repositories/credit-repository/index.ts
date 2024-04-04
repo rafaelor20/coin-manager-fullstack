@@ -2,25 +2,25 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function getCredits(userId: number) {
-  return prisma.userCredit.findMany({
+  return prisma.credit.findMany({
     where: { userId: userId },
   });
 }
 
 async function getCreditById(id: number) {
-  return prisma.userCredit.findUnique({
+  return prisma.credit.findUnique({
     where: { id: id },
   });
 }
 
 async function removeCreditById(id: number) {
-  return prisma.userCredit.delete({
+  return prisma.credit.delete({
     where: { id: id },
   });
 }
 
-async function storeCredit(data: Prisma.UserCreditUncheckedCreateInput) {
-  return prisma.userCredit.create({ data });
+async function storeCredit(data: Prisma.CreditUncheckedCreateInput) {
+  return prisma.credit.create({ data });
 }
 
 const creditRepository = {
