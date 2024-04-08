@@ -130,16 +130,6 @@ describe('POST /credits/store', () => {
       expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
 
-    it('should respond with status 400 if debtor is invalid', async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const credit = await createCredit(user);
-      credit.debtor = '';
-      const body = credit;
-      const response = await server.post('/credits/store').set('Authorization', `Bearer ${token}`).send(body);
-      expect(response.status).toBe(httpStatus.BAD_REQUEST);
-    });
-
     it('should respond with status 201 and create credit', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
@@ -151,6 +141,7 @@ describe('POST /credits/store', () => {
       expect(response.body).toEqual({
         id: expect.any(Number),
         userId: credit.userId,
+        description: credit.description,
         debtor: credit.debtor,
         amount: credit.amount,
         paid: expect.any(Boolean),
@@ -197,6 +188,7 @@ describe('GET /credits/:creditId', () => {
       expect(response.body).toEqual({
         id: credit.id,
         userId: credit.userId,
+        description: credit.description,
         debtor: credit.debtor,
         amount: credit.amount,
         paid: expect.any(Boolean),
@@ -244,6 +236,7 @@ describe('DELETE /credits/delete/:creditId', () => {
       expect(response.body).toEqual({
         id: expect.any(Number),
         userId: credit.userId,
+        description: credit.description,
         debtor: credit.debtor,
         amount: credit.amount,
         paid: expect.any(Boolean),

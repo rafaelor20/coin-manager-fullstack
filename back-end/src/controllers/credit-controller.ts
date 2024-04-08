@@ -30,8 +30,8 @@ export async function getCreditById(req: AuthenticatedRequest, res: Response, ne
 export async function storeCredit(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
-    const { debtor, amount, payDate } = req.body;
-    const credit = await creditService.storeCredit({ userId, debtor, amount, payDate });
+    const { debtor, amount, payDate, description } = req.body;
+    const credit = await creditService.storeCredit({ userId, description, debtor, amount, payDate });
     return res.status(httpStatus.CREATED).send(credit);
   } catch (error) {
     next(error);

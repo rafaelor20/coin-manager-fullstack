@@ -1,8 +1,20 @@
 import { Credit } from '@prisma/client';
 import moment from 'moment';
-import { unauthorizedError, invalidAmountError, invalidPayDateError, invalidDebtorError } from '@/errors';
+import {
+  unauthorizedError,
+  invalidAmountError,
+  invalidPayDateError,
+  invalidDebtorError,
+  invalidCreditIdError,
+} from '@/errors';
 import creditRepository from '@/repositories/credit-repository';
 import userRepository from '@/repositories/user-repository';
+
+function checkCreditIdIsNumber(value: any) {
+  if (typeof value !== 'number' || isNaN(value)) {
+    throw invalidCreditIdError();
+  }
+}
 
 async function checkUserIdByCreditId(userId: number, creditId: number) {
   const credit = await creditRepository.getCreditById(creditId);
@@ -44,13 +56,13 @@ async function getCredits(userId: number) {
   return creditRepository.getCredits(userId);
 }
 
-async function storeCredit({ userId, debtor, amount, payDate }: CreateCreditParams) {
+async function storeCredit({ userId, description, debtor, amount, payDate }: CreateCreditParams) {
   checkUserById(userId);
   checkAmount(amount);
   checkPayDate(payDate);
   isValidDebtor(debtor);
   amount = Number(amount);
-  return creditRepository.storeCredit({ userId, debtor, amount, payDate });
+  return creditRepository.storeCredit({ userId, debtor, amount, payDate, description });
 }
 
 async function getCreditById(userId: number, creditId: number) {
@@ -63,7 +75,7 @@ async function removeCredit(userId: number, creditId: number) {
   return creditRepository.removeCreditById(creditId);
 }
 
-export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | 'payDate'>;
+export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | 'payDate' | 'description'>;
 
 const creditService = {
   getCredits,

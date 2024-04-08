@@ -11,3 +11,4 @@ export * from './invalid-debtor-error';
 export * from './invalid-paydate-error';
 export * from './invalid-description-error';
 export * from './invalid-transaction-id-error';
+export * from './invalid-credit-id-error';
