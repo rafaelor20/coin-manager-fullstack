@@ -1,6 +1,12 @@
-import { UserDebt } from '@prisma/client';
+import { Debt } from '@prisma/client';
 import moment from 'moment';
-import { unauthorizedError, invalidAmountError, invalidCreditorError, invalidPayDateError } from '@/errors';
+import {
+  unauthorizedError,
+  invalidAmountError,
+  invalidCreditorError,
+  invalidPayDateError,
+  notFoundError,
+} from '@/errors';
 import debtRepository from '@/repositories/debt-repository';
 import userRepository from '@/repositories/user-repository';
 
@@ -44,13 +50,13 @@ async function getDebts(userId: number) {
   return debtRepository.getDebts(userId);
 }
 
-async function storeDebt({ userId, creditor, amount, payDate }: CreateDebtParams) {
+async function storeDebt({ userId, creditor, description, amount, payDate }: CreateDebtParams) {
   checkUserById(userId);
   checkAmount(amount);
   checkPayDate(payDate);
   isValidCreditor(creditor);
   amount = Number(amount);
-  return debtRepository.storeDebt({ userId, creditor, amount, payDate });
+  return debtRepository.storeDebt({ userId, creditor, description, amount, payDate });
 }
 
 async function getDebtById(userId: number, debtId: number) {
@@ -58,17 +64,27 @@ async function getDebtById(userId: number, debtId: number) {
   return debtRepository.getDebtById(debtId);
 }
 
-async function removeDebt(userId: number, debtId: number) {
+async function payDebtById(userId: number, debtId: number, payment: number) {
+  checkAmount(payment);
   await checkUserIdByDebtId(userId, debtId);
-  return debtRepository.removeDebtById(debtId);
+  const debt = await debtRepository.getDebtById(debtId);
+
+  const newDebt = debt.amount - payment;
+
+  if (newDebt <= 0) {
+    await debtRepository.payDebtById(debtId, debt.amount);
+    return debtRepository.markAsPayedDebtById(debtId);
+  }
+
+  return debtRepository.markAsPayedDebtById(debtId);
 }
 
-export type CreateDebtParams = Pick<UserDebt, 'userId' | 'creditor' | 'amount' | 'payDate'>;
+export type CreateDebtParams = Pick<Debt, 'userId' | 'creditor' | 'description' | 'amount' | 'payDate'>;
 
 const debtService = {
   getDebts,
   storeDebt,
-  removeDebt,
+  payDebtById,
   getDebtById,
 };
 

@@ -27,21 +27,25 @@ export async function getDebtById(req: AuthenticatedRequest, res: Response, next
 export async function storeDebt(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
-    const { creditor, amount, payDate } = req.body;
-    const debt = await debtService.storeDebt({ userId, creditor, amount, payDate });
+    const { creditor, description, amount, payDate } = req.body;
+    const debt = await debtService.storeDebt({ userId, creditor, description, amount, payDate });
     return res.status(httpStatus.CREATED).send(debt);
   } catch (error) {
     next(error);
   }
 }
 
-export async function removeDebt(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function payDebt(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
     const debtId = Number(req.params.debtId);
-    const debt = await debtService.removeDebt(userId, debtId);
+    const payment = Number(req.body.payment);
+    const debt = await debtService.payDebtById(userId, debtId, payment);
     return res.status(httpStatus.OK).send(debt);
   } catch (error) {
+    if (error.message === 'No result for this search!') {
+      return res.status(httpStatus.NOT_FOUND).send({ message: error.message });
+    }
     next(error);
   }
 }

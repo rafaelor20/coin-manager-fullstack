@@ -73,6 +73,7 @@ describe('GET /debts', () => {
             id: expect.any(Number),
             userId: debt.userId,
             creditor: expect.any(String),
+            description: expect.any(String),
             amount: expect.any(Number),
             paid: expect.any(Boolean),
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
@@ -121,6 +122,7 @@ describe('GET /debts/:debtId', () => {
         id: debt.id,
         userId: debt.userId,
         creditor: debt.creditor,
+        description: debt.description,
         amount: debt.amount,
         paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
@@ -185,7 +187,7 @@ describe('POST /debts/store', () => {
       expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
 
-    it('should respond with status 201 and create store', async () => {
+    it('should respond with status 201 and create debt', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const debt = await createDebt(user);
@@ -197,6 +199,7 @@ describe('POST /debts/store', () => {
         id: expect.any(Number),
         userId: debt.userId,
         creditor: debt.creditor,
+        description: debt.description,
         amount: debt.amount,
         paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
@@ -206,9 +209,9 @@ describe('POST /debts/store', () => {
   });
 });
 
-describe('DELETE /debts/delete/:debtId', () => {
+describe('DELETE /debts/payDebt/:debtId', () => {
   it('should respond with status 401 if no token is given', async () => {
-    const response = await server.delete('/debts/delete/:1');
+    const response = await server.delete('/debts/payDebt/:1');
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -216,7 +219,7 @@ describe('DELETE /debts/delete/:debtId', () => {
   it('should respond with status 401 if given token is not valid', async () => {
     const token = faker.lorem.word();
 
-    const response = await server.delete('/debts/delete/:1').set('Authorization', `Bearer ${token}`);
+    const response = await server.delete('/debts/payDebt/:1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -225,25 +228,34 @@ describe('DELETE /debts/delete/:debtId', () => {
     const userWithoutSession = await createUser();
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
 
-    const response = await server.delete('/debts/delete/:1').set('Authorization', `Bearer ${token}`);
+    const response = await server.delete('/debts/payDebt/:1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
 
   describe('when token is valid', () => {
-    it('should respond with status 200 and delete debt', async () => {
+    it('should respond with status 422 if debt does not exist', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const response = await server.delete('/debts/payDebt/1').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(400);
+    });
+
+    it('should respond with status 200 and payDebt debt', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const debt = await createDebt(user);
       const body = debt;
       const stored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(body);
-      const response = await server.delete(`/debts/delete/${body.id}`).set('Authorization', `Bearer ${token}`);
+      const response = await server.delete(`/debts/payDebt/${body.id}`).set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual({
         id: expect.any(Number),
         userId: debt.userId,
         creditor: debt.creditor,
+        description: debt.description,
         amount: debt.amount,
         paid: expect.any(Boolean),
         createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),

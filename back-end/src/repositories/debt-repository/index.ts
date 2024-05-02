@@ -2,32 +2,41 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function getDebts(userId: number) {
-  return prisma.userDebt.findMany({
+  return prisma.debt.findMany({
     where: { userId: userId },
   });
 }
 
 async function getDebtById(id: number) {
-  return prisma.userDebt.findUnique({
+  return prisma.debt.findUnique({
     where: { id: id },
   });
 }
 
-async function removeDebtById(id: number) {
-  return prisma.userDebt.delete({
+async function payDebtById(id: number, amount: number) {
+  return prisma.debt.update({
     where: { id: id },
+    data: { amount: amount },
   });
 }
 
-async function storeDebt(data: Prisma.UserDebtUncheckedCreateInput) {
-  return prisma.userDebt.create({ data });
+async function markAsPayedDebtById(id: number) {
+  return prisma.debt.update({
+    where: { id: id },
+    data: { paid: true },
+  });
+}
+
+async function storeDebt(data: Prisma.DebtUncheckedCreateInput) {
+  return prisma.debt.create({ data });
 }
 
 const debtRepository = {
   getDebts,
   storeDebt,
   getDebtById,
-  removeDebtById,
+  payDebtById,
+  markAsPayedDebtById,
 };
 
 export default debtRepository;

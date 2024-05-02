@@ -1,5 +1,4 @@
 import faker from '@faker-js/faker';
-import { any } from 'joi';
 import { createUser } from '../factories';
 import { cleanDb } from '../helpers';
 import { init } from '@/app';
