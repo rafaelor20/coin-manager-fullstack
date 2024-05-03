@@ -64,19 +64,10 @@ async function getDebtById(userId: number, debtId: number) {
   return debtRepository.getDebtById(debtId);
 }
 
-async function payDebtById(userId: number, debtId: number, payment: number) {
-  checkAmount(payment);
+async function deleteDebtById(userId: number, debtId: number) {
   await checkUserIdByDebtId(userId, debtId);
   const debt = await debtRepository.getDebtById(debtId);
-
-  const newDebt = debt.amount - payment;
-
-  if (newDebt <= 0) {
-    await debtRepository.payDebtById(debtId, debt.amount);
-    return debtRepository.markAsPayedDebtById(debtId);
-  }
-
-  return debtRepository.markAsPayedDebtById(debtId);
+  return debt;
 }
 
 export type CreateDebtParams = Pick<Debt, 'userId' | 'creditor' | 'description' | 'amount' | 'payDate'>;
@@ -84,7 +75,7 @@ export type CreateDebtParams = Pick<Debt, 'userId' | 'creditor' | 'description' 
 const debtService = {
   getDebts,
   storeDebt,
-  payDebtById,
+  deleteDebtById,
   getDebtById,
 };
 

@@ -209,9 +209,9 @@ describe('POST /debts/store', () => {
   });
 });
 
-describe('DELETE /debts/payDebt/:debtId', () => {
+describe('DELETE /debts/delete/:debtId', () => {
   it('should respond with status 401 if no token is given', async () => {
-    const response = await server.delete('/debts/payDebt/:1');
+    const response = await server.delete('/debts/delete/:1');
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -219,7 +219,7 @@ describe('DELETE /debts/payDebt/:debtId', () => {
   it('should respond with status 401 if given token is not valid', async () => {
     const token = faker.lorem.word();
 
-    const response = await server.delete('/debts/payDebt/:1').set('Authorization', `Bearer ${token}`);
+    const response = await server.delete('/debts/delete/:1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -228,27 +228,19 @@ describe('DELETE /debts/payDebt/:debtId', () => {
     const userWithoutSession = await createUser();
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
 
-    const response = await server.delete('/debts/payDebt/:1').set('Authorization', `Bearer ${token}`);
+    const response = await server.delete('/debts/delete/:1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
 
   describe('when token is valid', () => {
-    it('should respond with status 422 if debt does not exist', async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const response = await server.delete('/debts/payDebt/1').set('Authorization', `Bearer ${token}`);
-
-      expect(response.status).toBe(400);
-    });
-
-    it('should respond with status 200 and payDebt debt', async () => {
+    it('should respond with status 200 and delete debt', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const debt = await createDebt(user);
       const body = debt;
-      const stored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(body);
-      const response = await server.delete(`/debts/payDebt/${body.id}`).set('Authorization', `Bearer ${token}`);
+      const debtStored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(body);
+      const response = await server.delete(`/debts/delete/${body.id}`).set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual({

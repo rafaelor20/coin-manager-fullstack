@@ -35,12 +35,11 @@ export async function storeDebt(req: AuthenticatedRequest, res: Response, next: 
   }
 }
 
-export async function payDebt(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function deleteDebt(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
     const debtId = Number(req.params.debtId);
-    const payment = Number(req.body.payment);
-    const debt = await debtService.payDebtById(userId, debtId, payment);
+    const debt = await debtService.deleteDebtById(userId, debtId);
     return res.status(httpStatus.OK).send(debt);
   } catch (error) {
     if (error.message === 'No result for this search!') {

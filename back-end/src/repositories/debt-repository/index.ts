@@ -13,10 +13,9 @@ async function getDebtById(id: number) {
   });
 }
 
-async function payDebtById(id: number, amount: number) {
-  return prisma.debt.update({
+async function deleteDebtById(id: number) {
+  return prisma.debt.delete({
     where: { id: id },
-    data: { amount: amount },
   });
 }
 
@@ -35,7 +34,7 @@ const debtRepository = {
   getDebts,
   storeDebt,
   getDebtById,
-  payDebtById,
+  deleteDebtById,
   markAsPayedDebtById,
 };
 

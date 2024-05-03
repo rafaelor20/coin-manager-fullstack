@@ -1,0 +1,455 @@
+openapi: 3.0.1
+info:
+  title: API de Gestão Financeira Pessoal
+  version: 1.0.0
+  description: API para gerenciamento de transações financeiras pessoais, incluindo registros de despesas, receitas, dívidas e créditos.
+servers:
+  - url: 'http: //localhost:3000'
+    description: Servidor local para desenvolvimento e teste
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    UserCreate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      required:
+        - email
+        - password
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+    Credit:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        debtor:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+          format: float
+        createdAt:
+          type: string
+          format: date-time
+        payDate:
+          type: string
+          format: date-time
+          nullable: true
+    Debt:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        description:
+          type: string
+        creditor:
+          type: string
+        amount:
+          type: number
+          format: float
+        createdAt:
+          type: string
+          format: date-time
+        payDate:
+          type: string
+          format: date-time
+          nullable: true
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        description:
+          type: string
+        amount:
+          type: number
+          format: float
+        category:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+paths:
+  /users:
+    post:
+      summary: Criar um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses: 201:
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        409:
+          description: Email já em uso
+        400:
+          description: Requisição inválida
+  
+  /auth/sign-in:
+    post:
+      summary: Autenticar usuário (Login)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 6
+              required:
+                - email
+                - password
+      responses: 200:
+          description: Autenticação bem-sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        401:
+          description: Email ou senha incorretos
+        400:
+          description: Requisição inválida
+
+  /credits:
+    get:
+      summary: Obter créditos do usuário autenticado
+      security:
+        - BearerAuth: []
+      responses: 200:
+          description: Lista de créditos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Credit'
+
+  /credits/store:
+    post:
+      summary: Criar um novo crédito
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                debtor:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                amount:
+                  type: number
+                  format: float
+                payDate:
+                  type: string
+                  format: date-time
+                  nullable: true
+              required:
+                - userId
+                - amount
+      responses: 201:
+          description: Crédito criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credit'
+
+  /credits/{creditId
+}:
+    get:
+      summary: Obter crédito por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: creditId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 200:
+          description: Detalhes do crédito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credit'
+
+  /credits/payment:
+    post:
+      summary: Registrar pagamento de crédito
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                creditId:
+                  type: integer
+                payment:
+                  type: number
+                  format: float
+              required:
+                - userId
+                - creditId
+                - payment
+      responses: 200:
+          description: Pagamento registrado com sucesso
+        404:
+          description: Crédito não encontrado ou não pertence ao usuário
+
+  /credits/delete/{creditId
+}:
+    delete:
+      summary: Deletar crédito por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: creditId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 200:
+          description: Crédito deletado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credit'
+
+  /debts:
+    get:
+      summary: Obter lista de dívidas do usuário autenticado
+      security:
+        - BearerAuth: []
+      responses: 200:
+          description: Lista de dívidas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Debt'
+
+  /debts/store:
+    post:
+      summary: Criar uma nova dívida
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                description:
+                  type: string
+                  nullable: true
+                creditor:
+                  type: string
+                  nullable: true
+                amount:
+                  type: number
+                  format: float
+                payDate:
+                  type: string
+                  format: date-time
+                  nullable: true
+              required:
+                - userId
+                - amount
+      responses: 201:
+          description: Dívida criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+
+  /debts/{debtId
+}:
+    get:
+      summary: Obter dívida por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: debtId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 200:
+          description: Detalhes da dívida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+
+  /debts/payment:
+    post:
+      summary: Registrar pagamento de dívida
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                debtId:
+                  type: integer
+                payment:
+                  type: number
+                  format: float
+              required:
+                - userId
+                - debtId
+                - payment
+      responses: 200:
+          description: Pagamento registrado com sucesso
+        404:
+          description: Dívida não encontrada ou não pertence ao usuário
+
+  /debts/delete/{debtId
+}:
+    delete:
+      summary: Deletar dívida por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: debtId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 200:
+          description: Dívida deletada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+
+  /transactions/historic:
+    get:
+      summary: Obter histórico de transações do usuário autenticado
+      security:
+        - BearerAuth: []
+      responses: 200:
+          description: Histórico de transações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+
+  /transactions/store:
+    post:
+      summary: Criar uma nova transação
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                description:
+                  type: string
+                  nullable: true
+                amount:
+                  type: number
+                  format: float
+                category:
+                  type: string
+                  nullable: true
+              required:
+                - userId
+                - amount
+      responses: 201:
+          description: Transação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+
+  /transactions/delete/{transactionId
+}:
+    delete:
+      summary: Deletar transação por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 200:
+          description: Transação deletada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
