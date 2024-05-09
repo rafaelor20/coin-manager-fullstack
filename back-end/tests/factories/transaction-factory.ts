@@ -8,7 +8,7 @@ export async function createTransaction(params: Partial<User> = {}): Promise<Tra
       userId: params.id || 12,
       description: faker.word.preposition(),
       amount: 3214,
-      category: faker.word.adverb(),
+      entity: faker.company.companyName(),
     },
   });
 }

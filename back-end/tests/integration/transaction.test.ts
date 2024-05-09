@@ -75,8 +75,8 @@ describe('GET /transactions/historic', () => {
             userId: transaction.userId,
             description: expect.any(String),
             amount: expect.any(Number),
-            date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-            category: expect.any(String),
+            entity: expect.any(String),
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           }),
         ]),
       );
@@ -144,8 +144,8 @@ describe('POST /transactions/store', () => {
         userId: transaction.userId,
         description: transaction.description,
         amount: transaction.amount,
-        date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-        category: transaction.category,
+        createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+        entity: transaction.entity,
       });
     });
   });

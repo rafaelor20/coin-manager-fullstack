@@ -16,8 +16,8 @@ export async function getHistoric(req: AuthenticatedRequest, res: Response, next
 export async function storeTransaction(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
-    const { description, amount } = req.body;
-    const transaction = await transactionService.storeTransaction({ userId, description, amount });
+    const { description, amount, entity } = req.body;
+    const transaction = await transactionService.storeTransaction({ userId, description, amount, entity });
     return res.status(httpStatus.CREATED).send(transaction);
   } catch (error) {
     next(error);
