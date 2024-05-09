@@ -37,12 +37,12 @@ async function getHistoric(userId: number) {
   return transactionRepository.getHistoric(userId);
 }
 
-async function storeTransaction({ userId, description, amount, category }: CreateTransactionParams) {
+async function storeTransaction({ userId, description, amount }: CreateTransactionParams) {
   checkUserById(userId);
   checkAmount(amount);
   isValidDescription(description);
   amount = Number(amount);
-  return transactionRepository.storeTransaction({ userId, description, amount, category });
+  return transactionRepository.storeTransaction({ userId, description, amount });
 }
 
 async function deleteTransaction(userId: number, transactionId: number) {
@@ -51,7 +51,7 @@ async function deleteTransaction(userId: number, transactionId: number) {
   return transactionRepository.deleteTransaction({ transactionId });
 }
 
-export type CreateTransactionParams = Pick<Transaction, 'userId' | 'description' | 'amount' | 'category'>;
+export type CreateTransactionParams = Pick<Transaction, 'userId' | 'description' | 'amount'>;
 
 const transactionService = {
   getHistoric,
