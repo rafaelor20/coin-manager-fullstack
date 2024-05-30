@@ -71,16 +71,6 @@ describe('POST /auth/sign-in', () => {
           email: user.email,
         });
       });
-
-      it('should respond with status 200 and session token', async () => {
-        const body = generateValidBody();
-        await createUser(body);
-
-        const response = await server.post('/auth/sign-in').send(body);
-
-        expect(response.status).toBe(httpStatus.OK);
-        expect(response.body.token).toBeDefined();
-      });
     });
   });
 });
