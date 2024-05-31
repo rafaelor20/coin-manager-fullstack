@@ -310,10 +310,7 @@ describe('POST /debts/payment', () => {
         expect(response.status).toBe(httpStatus.NOT_FOUND);
       });
     });
-    //POST "/debts/payment/:debtId" Body: { userId, debtId, payment }
-    //Response:
-    //{ Debt:{{ id, userId, creditor, description, amount, paid, createdAt, payDate }}
-    //Transactio:{ { id, userId, description, amount, entity, createdAt }}}
+
     describe('when amount is not enough to pay', () => {
       it('should update the owned amount, register the transaction and respond with status 200', async () => {
         const user = await createUser();
