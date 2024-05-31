@@ -256,3 +256,137 @@ describe('DELETE /debts/delete/:debtId', () => {
     });
   });
 });
+
+describe('POST /debts/payment', () => {
+  it('should respond with status 401 if no token is given', async () => {
+    const paymentBody = {
+      userId: 1,
+      debtId: 1,
+      payment: 11,
+    };
+    const response = await server.post('/debts/payment').send(paymentBody);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if given token is not valid', async () => {
+    const token = faker.lorem.word();
+    const paymentBody = {
+      userId: 1,
+      debtId: 1,
+      payment: 11,
+    };
+    const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if there is no session for given token', async () => {
+    const userWithoutSession = await createUser();
+    const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
+    const paymentBody = {
+      userId: userWithoutSession.id,
+      debtId: 1,
+      payment: 11,
+    };
+
+    const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  describe('when token is valid', () => {
+    describe('when debt is not found', () => {
+      it('should respond with status 404', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+        const paymentBody = {
+          userId: user.id,
+          debtId: 1,
+          payment: 11,
+        };
+        const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+
+        expect(response.status).toBe(httpStatus.NOT_FOUND);
+      });
+    });
+    //POST "/debts/payment/:debtId" Body: { userId, debtId, payment }
+    //Response:
+    //{ Debt:{{ id, userId, creditor, description, amount, paid, createdAt, payDate }}
+    //Transactio:{ { id, userId, description, amount, entity, createdAt }}}
+    describe('when amount is not enough to pay', () => {
+      it('should update the owned amount, register the transaction and respond with status 200', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+        const debt = await createDebt(user);
+        const debtStored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
+        const paymentBody = {
+          userId: user.id,
+          debtId: debt.id,
+          payment: debt.amount - 1,
+        };
+        const response = await server.post(`/debts/payment/`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+
+        expect(response.status).toBe(httpStatus.OK);
+        const debtId = expect.any(Number);
+        expect(response.body).toEqual({
+          Debt: {
+            id: debtId,
+            userId: debt.userId,
+            creditor: debt.creditor,
+            description: debt.description,
+            amount: debt.amount,
+            paid: expect(false),
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          },
+          Transaction: {
+            id: expect.any(Number),
+            userId: user.id,
+            description: `Payment of debt ${debtId}`,
+            amount: debt.amount - paymentBody.payment,
+            entity: debt.creditor,
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          },
+        });
+      });
+    });
+    describe('when amount is enough to pay', () => {
+      it('should update the owned amount, register the transaction and respond with status 200', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+        const debt = await createDebt(user);
+        const debtStored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
+        const paymentBody = {
+          userId: user.id,
+          debtId: debt.id,
+          payment: debt.amount,
+        };
+        const response = await server.post(`/debts/payment/`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+
+        expect(response.status).toBe(httpStatus.OK);
+        const debtId = expect.any(Number);
+        expect(response.body).toEqual({
+          Debt: {
+            id: debtId,
+            userId: debt.userId,
+            creditor: debt.creditor,
+            description: debt.description,
+            amount: debt.amount,
+            paid: expect(true),
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          },
+          Transaction: {
+            id: expect.any(Number),
+            userId: user.id,
+            description: `Payment of debt ${debtId}`,
+            amount: debt.amount - paymentBody.payment,
+            entity: debt.creditor,
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          },
+        });
+      });
+    });
+  });
+});
