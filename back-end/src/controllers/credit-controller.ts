@@ -48,3 +48,26 @@ export async function removeCredit(req: AuthenticatedRequest, res: Response, nex
     next(error);
   }
 }
+
+export async function creditPayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const { creditId, amount } = req.body;
+    const Debt = await creditService.creditPayment(userId, creditId, amount);
+    return res.status(httpStatus.OK).send({ Debt });
+  } catch (error) {
+    if (error.message === 'Invalid Amount Error!') {
+      return res.status(httpStatus.NOT_FOUND).send({ error: error.message });
+    }
+
+    if (error.name === 'UnauthorizedError') {
+      return res.status(httpStatus.UNAUTHORIZED).send({ error: error.message });
+    }
+
+    if (error.message === 'Id is not valid number') {
+      return res.status(httpStatus.NOT_FOUND).send({ error: error.message });
+    }
+
+    next(error);
+  }
+}

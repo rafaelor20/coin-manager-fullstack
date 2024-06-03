@@ -252,7 +252,7 @@ describe('POST /credits/payment', () => {
     const paymentBody = {
       userId: 1,
       creditId: 1,
-      payment: 11,
+      amount: 11,
     };
     const response = await server.post('/credits/payment').send(paymentBody);
 
@@ -264,7 +264,7 @@ describe('POST /credits/payment', () => {
     const paymentBody = {
       userId: 1,
       creditId: 1,
-      payment: 11,
+      amount: 11,
     };
     const response = await server.post('/credits/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
@@ -277,7 +277,7 @@ describe('POST /credits/payment', () => {
     const paymentBody = {
       userId: userWithoutSession.id,
       creditId: 1,
-      payment: 11,
+      amount: 11,
     };
 
     const response = await server.post('/credits/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
@@ -286,14 +286,14 @@ describe('POST /credits/payment', () => {
   });
 
   describe('when token is valid', () => {
-    describe('when debt is not found', () => {
+    describe('when credit is not found', () => {
       it('should respond with status 404', async () => {
         const user = await createUser();
         const token = await generateValidToken(user);
         const paymentBody = {
           userId: user.id,
           creditId: 1,
-          payment: 11,
+          amount: 11,
         };
         const response = await server
           .post('/credits/payment')
@@ -313,10 +313,10 @@ describe('POST /credits/payment', () => {
         const paymentBody = {
           userId: user.id,
           creditId: credit.id,
-          payment: credit.amount - 1,
+          amount: credit.amount - 1,
         };
         const response = await server
-          .post(`/credits/payment/`)
+          .post(`/credits/payment`)
           .set('Authorization', `Bearer ${token}`)
           .send(paymentBody);
 
@@ -337,7 +337,7 @@ describe('POST /credits/payment', () => {
             id: expect.any(Number),
             userId: user.id,
             description: `Payment of debt ${debtId}`,
-            amount: credit.amount - paymentBody.payment,
+            amount: credit.amount - paymentBody.amount,
             entity: credit.debtor,
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           },
@@ -349,13 +349,16 @@ describe('POST /credits/payment', () => {
         const user = await createUser();
         const token = await generateValidToken(user);
         const credit = await createCredit(user);
-        await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(credit);
+        await server.post('/credits/store').set('Authorization', `Bearer ${token}`).send(credit);
         const paymentBody = {
           userId: user.id,
           creditId: credit.id,
-          payment: credit.amount,
+          amount: credit.amount,
         };
-        const response = await server.post(`/debts/payment/`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server
+          .post(`/credits/payment`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
         const creditId = expect.any(Number);
@@ -363,7 +366,7 @@ describe('POST /credits/payment', () => {
           Debt: {
             id: creditId,
             userId: credit.userId,
-            creditor: credit.debtor,
+            debtor: credit.debtor,
             description: credit.description,
             amount: credit.amount,
             paid: expect(true),
@@ -374,7 +377,7 @@ describe('POST /credits/payment', () => {
             id: expect.any(Number),
             userId: user.id,
             description: `Payment of debt ${creditId}`,
-            amount: credit.amount - paymentBody.payment,
+            amount: credit.amount - paymentBody.amount,
             entity: credit.debtor,
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           },

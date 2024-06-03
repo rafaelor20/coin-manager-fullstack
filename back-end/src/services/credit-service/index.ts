@@ -18,6 +18,10 @@ function checkCreditIdIsNumber(value: any) {
 
 async function checkUserIdByCreditId(userId: number, creditId: number) {
   const credit = await creditRepository.getCreditById(creditId);
+  console.log(credit);
+  if (!credit) {
+    throw invalidCreditIdError();
+  }
   if (credit.userId !== userId) {
     throw unauthorizedError();
   }
@@ -67,12 +71,35 @@ async function storeCredit({ userId, description, debtor, amount, payDate }: Cre
 
 async function getCreditById(userId: number, creditId: number) {
   await checkUserIdByCreditId(userId, creditId);
-  return creditRepository.getCreditById(creditId);
+  const credit = await creditRepository.getCreditById(creditId);
+  return credit;
 }
 
 async function removeCredit(userId: number, creditId: number) {
   await checkUserIdByCreditId(userId, creditId);
   return creditRepository.removeCreditById(creditId);
+}
+
+async function partialPayment(credit: Credit, amount: number) {
+  const newAmount = credit.amount - amount;
+  return creditRepository.updateCreditAmount(credit.id, newAmount);
+}
+
+async function fullPayment(credit: Credit) {
+  return creditRepository.payCredit(credit.id);
+}
+
+async function creditPayment(userId: number, creditId: number, payment: number) {
+  checkCreditIdIsNumber(creditId);
+  checkAmount(payment);
+  const credit = await getCreditById(userId, creditId);
+  let updatedCredit;
+  if (credit.amount < payment) {
+    updatedCredit = await partialPayment(credit, payment);
+  } else {
+    updatedCredit = await fullPayment(credit);
+  }
+  return updatedCredit;
 }
 
 export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | 'payDate' | 'description'>;
@@ -82,6 +109,7 @@ const creditService = {
   storeCredit,
   getCreditById,
   removeCredit,
+  creditPayment,
 };
 
 export default creditService;
