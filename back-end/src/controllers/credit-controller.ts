@@ -53,8 +53,8 @@ export async function creditPayment(req: AuthenticatedRequest, res: Response, ne
   try {
     const { userId } = req;
     const { creditId, amount } = req.body;
-    const Debt = await creditService.creditPayment(userId, creditId, amount);
-    return res.status(httpStatus.OK).send({ Debt });
+    const result = await creditService.creditPayment(userId, creditId, amount);
+    return res.status(httpStatus.OK).send(result);
   } catch (error) {
     if (error.message === 'Invalid Amount Error!') {
       return res.status(httpStatus.NOT_FOUND).send({ error: error.message });

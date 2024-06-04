@@ -321,26 +321,24 @@ describe('POST /credits/payment', () => {
           .send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
-        const debtId = expect.any(Number);
-        expect(response.body).toEqual({
-          Debt: {
-            id: debtId,
-            userId: credit.userId,
-            debtor: credit.debtor,
-            description: credit.description,
-            amount: credit.amount,
-            paid: expect(false),
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
-          Transaction: {
-            id: expect.any(Number),
-            userId: user.id,
-            description: `Payment of debt ${debtId}`,
-            amount: credit.amount - paymentBody.amount,
-            entity: credit.debtor,
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
+        const { Credit, Transaction } = response.body;
+        expect(Credit).toEqual({
+          id: expect.any(Number),
+          userId: credit.userId,
+          debtor: credit.debtor,
+          description: credit.description,
+          amount: credit.amount - paymentBody.amount,
+          paid: false,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+        });
+        expect(Transaction).toEqual({
+          id: expect.any(Number),
+          userId: user.id,
+          description: `Payment of credit ${Credit.id}`,
+          amount: credit.amount - paymentBody.amount,
+          entity: credit.debtor,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
       });
     });
@@ -362,25 +360,24 @@ describe('POST /credits/payment', () => {
 
         expect(response.status).toBe(httpStatus.OK);
         const creditId = expect.any(Number);
-        expect(response.body).toEqual({
-          Debt: {
-            id: creditId,
-            userId: credit.userId,
-            debtor: credit.debtor,
-            description: credit.description,
-            amount: credit.amount,
-            paid: expect(true),
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
-          Transaction: {
-            id: expect.any(Number),
-            userId: user.id,
-            description: `Payment of debt ${creditId}`,
-            amount: credit.amount - paymentBody.amount,
-            entity: credit.debtor,
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
+        const { Credit, Transaction } = response.body;
+        expect(Credit).toEqual({
+          id: creditId,
+          userId: credit.userId,
+          debtor: credit.debtor,
+          description: credit.description,
+          amount: credit.amount,
+          paid: true,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+        });
+        expect(Transaction).toEqual({
+          id: expect.any(Number),
+          userId: user.id,
+          description: `Payment of credit ${Credit.id}`,
+          amount: credit.amount,
+          entity: credit.debtor,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
       });
     });

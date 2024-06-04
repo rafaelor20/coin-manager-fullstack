@@ -9,6 +9,7 @@ import {
 } from '@/errors';
 import creditRepository from '@/repositories/credit-repository';
 import userRepository from '@/repositories/user-repository';
+import transactionService from '@/services/transaction-service';
 
 function checkCreditIdIsNumber(value: any) {
   if (typeof value !== 'number' || isNaN(value)) {
@@ -18,7 +19,6 @@ function checkCreditIdIsNumber(value: any) {
 
 async function checkUserIdByCreditId(userId: number, creditId: number) {
   const credit = await creditRepository.getCreditById(creditId);
-  console.log(credit);
   if (!credit) {
     throw invalidCreditIdError();
   }
@@ -93,13 +93,19 @@ async function creditPayment(userId: number, creditId: number, payment: number) 
   checkCreditIdIsNumber(creditId);
   checkAmount(payment);
   const credit = await getCreditById(userId, creditId);
-  let updatedCredit;
-  if (credit.amount < payment) {
-    updatedCredit = await partialPayment(credit, payment);
+  let Credit;
+  if (credit.amount > payment) {
+    Credit = await partialPayment(credit, payment);
   } else {
-    updatedCredit = await fullPayment(credit);
+    Credit = await fullPayment(credit);
   }
-  return updatedCredit;
+  const Transaction = await transactionService.storeTransaction({
+    userId,
+    description: `Payment of credit ${Credit.id}`,
+    amount: Credit.amount,
+    entity: Credit.debtor,
+  });
+  return { Credit, Transaction };
 }
 
 export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | 'payDate' | 'description'>;
