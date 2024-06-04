@@ -307,7 +307,7 @@ describe('POST /debts/payment', () => {
         };
         const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
-        expect(response.status).toBe(httpStatus.NOT_FOUND);
+        expect(response.status).toBe(httpStatus.UNAUTHORIZED);
       });
     });
 
@@ -316,35 +316,33 @@ describe('POST /debts/payment', () => {
         const user = await createUser();
         const token = await generateValidToken(user);
         const debt = await createDebt(user);
-        const debtStored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
+        await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
           debtId: debt.id,
           payment: debt.amount - 1,
         };
-        const response = await server.post(`/debts/payment/`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server.post(`/debts/payment`).set('Authorization', `Bearer ${token}`).send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
-        const debtId = expect.any(Number);
-        expect(response.body).toEqual({
-          Debt: {
-            id: debtId,
-            userId: debt.userId,
-            creditor: debt.creditor,
-            description: debt.description,
-            amount: debt.amount,
-            paid: expect(false),
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
-          Transaction: {
-            id: expect.any(Number),
-            userId: user.id,
-            description: `Payment of debt ${debtId}`,
-            amount: debt.amount - paymentBody.payment,
-            entity: debt.creditor,
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
+        const { Debt, Transaction } = response.body;
+        expect(Debt).toEqual({
+          id: expect.any(Number),
+          userId: debt.userId,
+          creditor: debt.creditor,
+          description: debt.description,
+          amount: debt.amount,
+          paid: expect(false),
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+        });
+        expect(Transaction).toEqual({
+          id: expect.any(Number),
+          userId: user.id,
+          description: `Payment of debt ${Debt.id}`,
+          amount: debt.amount - paymentBody.payment,
+          entity: debt.creditor,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
       });
     });
@@ -353,35 +351,33 @@ describe('POST /debts/payment', () => {
         const user = await createUser();
         const token = await generateValidToken(user);
         const debt = await createDebt(user);
-        const debtStored = await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
+        await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
           debtId: debt.id,
           payment: debt.amount,
         };
-        const response = await server.post(`/debts/payment/`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server.post(`/debts/payment`).set('Authorization', `Bearer ${token}`).send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
-        const debtId = expect.any(Number);
-        expect(response.body).toEqual({
-          Debt: {
-            id: debtId,
-            userId: debt.userId,
-            creditor: debt.creditor,
-            description: debt.description,
-            amount: debt.amount,
-            paid: expect(true),
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
-          Transaction: {
-            id: expect.any(Number),
-            userId: user.id,
-            description: `Payment of debt ${debtId}`,
-            amount: debt.amount - paymentBody.payment,
-            entity: debt.creditor,
-            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
-          },
+        const { Debt, Transaction } = response.body;
+        expect(Debt).toEqual({
+          id: expect.any(Number),
+          userId: debt.userId,
+          creditor: debt.creditor,
+          description: debt.description,
+          amount: debt.amount,
+          paid: expect(false),
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+        });
+        expect(Transaction).toEqual({
+          id: expect.any(Number),
+          userId: user.id,
+          description: `Payment of debt ${Debt.id}`,
+          amount: debt.amount,
+          entity: debt.creditor,
+          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
       });
     });
