@@ -1,17 +1,15 @@
 import { Debt } from '@prisma/client';
 import moment from 'moment';
-import {
-  unauthorizedError,
-  invalidAmountError,
-  invalidCreditorError,
-  invalidPayDateError,
-  notFoundError,
-} from '@/errors';
+import { unauthorizedError, invalidAmountError, invalidCreditorError, invalidPayDateError } from '@/errors';
 import debtRepository from '@/repositories/debt-repository';
 import userRepository from '@/repositories/user-repository';
+import transactionService from '@/services/transaction-service';
 
 async function checkUserIdByDebtId(userId: number, debtId: number) {
   const debt = await debtRepository.getDebtById(debtId);
+  if (!debt) {
+    throw unauthorizedError();
+  }
   if (debt.userId !== userId) {
     throw unauthorizedError();
   }
@@ -70,6 +68,34 @@ async function deleteDebtById(userId: number, debtId: number) {
   return debt;
 }
 
+async function partialPayment(debt: Debt, amount: number) {
+  const newAmount = debt.amount - amount;
+  return debtRepository.updateDebtAmount(debt.id, newAmount);
+}
+
+async function fullPayment(debt: Debt) {
+  return debtRepository.payDebt(debt.id);
+}
+
+async function debtPayment(userId: number, debtId: number, amount: number) {
+  await checkUserIdByDebtId(userId, debtId);
+  checkAmount(amount);
+  const debt = await debtRepository.getDebtById(debtId);
+  let Debt;
+  if (debt.amount > amount) {
+    Debt = await partialPayment(debt, amount);
+  } else {
+    Debt = await fullPayment(debt);
+  }
+  const Transaction = await transactionService.storeTransaction({
+    userId,
+    description: `Payment of debt ${Debt.id}`,
+    amount: Debt.amount,
+    entity: Debt.creditor,
+  });
+  return { Debt, Transaction };
+}
+
 export type CreateDebtParams = Pick<Debt, 'userId' | 'creditor' | 'description' | 'amount' | 'payDate'>;
 
 const debtService = {
@@ -77,6 +103,7 @@ const debtService = {
   storeDebt,
   deleteDebtById,
   getDebtById,
+  debtPayment,
 };
 
 export default debtService;

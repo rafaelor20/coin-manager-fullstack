@@ -48,3 +48,25 @@ export async function deleteDebt(req: AuthenticatedRequest, res: Response, next:
     next(error);
   }
 }
+
+export async function debtPayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const { debtId, payment } = req.body;
+    const result = await debtService.debtPayment(userId, debtId, payment);
+    return res.status(httpStatus.OK).send(result);
+  } catch (error) {
+    if (error.message === 'Invalid Amount Error!') {
+      return res.status(httpStatus.NOT_FOUND).send({ error: error.message });
+    }
+
+    if (error.name === 'UnauthorizedError') {
+      return res.status(httpStatus.UNAUTHORIZED).send({ error: error.message });
+    }
+
+    if (error.message === 'Id is not valid number') {
+      return res.status(httpStatus.NOT_FOUND).send({ error: error.message });
+    }
+    next(error);
+  }
+}

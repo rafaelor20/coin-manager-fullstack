@@ -302,7 +302,7 @@ describe('POST /debts/payment', () => {
         const token = await generateValidToken(user);
         const paymentBody = {
           userId: user.id,
-          debtId: 1,
+          debtId: 10,
           payment: 11,
         };
         const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
@@ -331,8 +331,8 @@ describe('POST /debts/payment', () => {
           userId: debt.userId,
           creditor: debt.creditor,
           description: debt.description,
-          amount: debt.amount,
-          paid: expect(false),
+          amount: debt.amount - paymentBody.payment,
+          paid: false,
           createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
@@ -367,7 +367,7 @@ describe('POST /debts/payment', () => {
           creditor: debt.creditor,
           description: debt.description,
           amount: debt.amount,
-          paid: expect(false),
+          paid: true,
           createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });

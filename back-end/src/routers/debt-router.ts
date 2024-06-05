@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticateToken } from '@/middlewares';
-import { getDebts, getDebtById, storeDebt, deleteDebt } from '@/controllers/debt-controller';
+import { getDebts, getDebtById, storeDebt, deleteDebt, debtPayment } from '@/controllers/debt-controller';
 
 const debtRouter = Router();
 
@@ -9,6 +9,7 @@ debtRouter
   .get('/', getDebts)
   .get('/:debtId', getDebtById)
   .post('/store', storeDebt)
-  .delete('/delete/:debtId', deleteDebt);
+  .delete('/delete/:debtId', deleteDebt)
+  .post('/payment', debtPayment);
 
 export { debtRouter };

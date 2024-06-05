@@ -19,15 +19,22 @@ async function deleteDebtById(id: number) {
   });
 }
 
-async function markAsPayedDebtById(id: number) {
+async function storeDebt(data: Prisma.DebtUncheckedCreateInput) {
+  return prisma.debt.create({ data });
+}
+
+async function updateDebtAmount(id: number, amount: number) {
+  return prisma.debt.update({
+    where: { id: id },
+    data: { amount: amount },
+  });
+}
+
+async function payDebt(id: number) {
   return prisma.debt.update({
     where: { id: id },
     data: { paid: true },
   });
-}
-
-async function storeDebt(data: Prisma.DebtUncheckedCreateInput) {
-  return prisma.debt.create({ data });
 }
 
 const debtRepository = {
@@ -35,7 +42,8 @@ const debtRepository = {
   storeDebt,
   getDebtById,
   deleteDebtById,
-  markAsPayedDebtById,
+  updateDebtAmount,
+  payDebt,
 };
 
 export default debtRepository;
