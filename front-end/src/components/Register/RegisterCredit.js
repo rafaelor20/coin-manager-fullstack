@@ -9,6 +9,7 @@ export default function RegisterCredit() {
   const [amount, setAmount] = useState('');
   const [debtor, setDebtor] = useState('');
   const [payDate, setPayDate] = useState('');
+  const [description, setDescription] = useState('');
 
   const { saveCredit: saveCreditFunction } = saveCredit();
 
@@ -20,12 +21,13 @@ export default function RegisterCredit() {
       const isoFormattedDate = new Date(payDate).toISOString();
 
       // Call saveCredit function with the required data
-      await saveCreditFunction({ amount, debtor, payDate: isoFormattedDate });
+      await saveCreditFunction({ amount, debtor, description, payDate: isoFormattedDate });
 
       // Optionally, you can reset the form fields after successful submission
       setAmount('');
       setDebtor('');
       setPayDate('');
+      setDescription('');
 
       // Add any additional logic after a successful credit registration
       console.log('Credit registered successfully!');
@@ -55,6 +57,12 @@ export default function RegisterCredit() {
           label="Payment Date"
           type="date"
           value={payDate}
+          onChange={(e) => setPayDate(e.target.value)}
+        />
+        <Input
+          label="description"
+          type="date"
+          value={description}
           onChange={(e) => setPayDate(e.target.value)}
         />
         <Button type="submit" color="primary" fullWidth>

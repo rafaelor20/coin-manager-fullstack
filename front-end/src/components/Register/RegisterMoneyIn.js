@@ -7,7 +7,7 @@ import saveTransaction from '../../hooks/api/saveTransaction';
 
 export default function RegisterMoneyIn() {
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('');
+  const [entity, setEntity] = useState('');
   const [description, setDescription] = useState('');
 
   const { saveTransaction: saveTransactionFunction } = saveTransaction();
@@ -17,11 +17,11 @@ export default function RegisterMoneyIn() {
 
     try {
       // Call saveTransaction function with the required data
-      await saveTransactionFunction({ amount, category, description });
+      await saveTransactionFunction({ amount, entity, description });
 
       // Optionally, you can reset the form fields after successful submission
       setAmount('');
-      setCategory('');
+      setEntity('');
       setDescription('');
 
       // Add any additional logic after a successful transaction registration
@@ -43,10 +43,10 @@ export default function RegisterMoneyIn() {
           onChange={(e) => setAmount(e.target.value)}
         />
         <Input
-          label="Category"
+          label="Entity"
           type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={entity}
+          onChange={(e) => setEntity(e.target.value)}
         />
         <Input
           label="description"

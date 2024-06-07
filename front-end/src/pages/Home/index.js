@@ -23,7 +23,6 @@ export default function Home() {
         const response = await useGetTransactions();
         setTransactions(response);
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error('Error fetching transactions:', error);
       }
     };

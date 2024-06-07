@@ -8,8 +8,8 @@ export default function TransactionContainer(props) {
     <TransactionHistory>
       <h3>Transactions:</h3>
       {reversedTransactions.map((transaction) => {
-        const date = new Date(transaction.date);
-        const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`;
+        const createdAt = new Date(transaction.createdAt);
+        const formattedDate = `${createdAt.getMonth() + 1}/${createdAt.getDate()}`;
         return (
           <Transaction key={transaction.id}>
             <TransactionDate>{formattedDate}</TransactionDate>

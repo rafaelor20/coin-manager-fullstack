@@ -10,6 +10,7 @@ export default function RegisterDebt() {
   const [amount, setAmount] = useState('');
   const [creditor, setCreditor] = useState('');
   const [payDate, setPayDate] = useState('');
+  const [description, setDescription] = useState('');
 
   const { saveDebt: saveDebtFunction } = saveDebt();
 
@@ -21,7 +22,7 @@ export default function RegisterDebt() {
       const isoFormattedDate = new Date(payDate).toISOString();
 
       // Call saveDebtFunction function with the required data
-      await saveDebtFunction({ amount, creditor, payDate: isoFormattedDate });
+      await saveDebtFunction({ amount, creditor, description, payDate: isoFormattedDate });
 
       // Optionally, you can reset the form fields after successful submission
       setAmount('');
@@ -57,6 +58,12 @@ export default function RegisterDebt() {
           type="date"
           value={payDate}
           onChange={(e) => setPayDate(e.target.value)}
+        />
+        <Input
+          label="Description"
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <Button type="submit" color="primary" fullWidth>
           Send
