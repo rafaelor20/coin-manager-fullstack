@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  
   const user1 = await prisma.user.create({
     data: {
       password: 'password1',
@@ -27,7 +26,7 @@ async function main() {
           },
         ],
       },
-      UserDebt: {
+      Debts: {
         create: [
           {
             creditor: 'creditor1',
@@ -35,7 +34,7 @@ async function main() {
           },
         ],
       },
-      UserCredit: {
+      Credits: {
         create: [
           {
             debtor: 'debtor1',
@@ -69,7 +68,7 @@ async function main() {
           },
         ],
       },
-      UserDebt: {
+      Debts: {
         create: [
           {
             creditor: 'creditor2',
@@ -77,7 +76,7 @@ async function main() {
           },
         ],
       },
-      UserCredit: {
+      Credits: {
         create: [
           {
             debtor: 'debtor2',
