@@ -4,6 +4,7 @@ import Header from './Header';
 import Button from '../Form/Button';
 import Input from '../Form/Input';
 import payCredit from '../../hooks/api/payCredit';
+import deleteCredit from '../../services/creditApi';
 
 export default function RegisterMoneyOut(props) {
   const [amount, setAmount] = useState('');
@@ -29,6 +30,19 @@ export default function RegisterMoneyOut(props) {
     }
   };
 
+  const handleDelete = async(event) => { 
+    try {
+      // Call deleteCredit function with the required data
+      await deleteCredit({ creditId: props.creditId });
+
+      // Add any additional logic after a successful transaction registration
+      console.log('Credit deleted successfully!');
+    } catch (error) {
+      // Handle errors, e.g., display an error message to the user
+      console.error('Error deleting credit:', error.message);
+    }
+  };
+
   return (
     <Container>
       <Header text="Pay Credit" />
@@ -44,6 +58,13 @@ export default function RegisterMoneyOut(props) {
           Send
         </Button>
       </form>
+      <Header text="Delete Credit" />
+      <form onSubmit={handleDelete}>
+        <Button type="submit" color="primary" fullWidth>
+          Delete
+        </Button>
+      </form>
+      
     </Container>
   );
 }

@@ -8,6 +8,8 @@ import MoneyIn from '../../components/Home/ButtonMoneyIn';
 import MoneyOut from '../../components/Home/ButtonMoneyOut';
 import Debt from '../../components/Home/ButtonDebt';
 import Credit from '../../components/Home/ButtonCredit';
+import ListCredits from '../Lists/ListCredits';
+import ListDebts from '../Lists/ListDebts';
 
 import Header from '../../components/Home/Header';
 import Footer from '../../components/Home/Footer';
@@ -54,6 +56,10 @@ export default function Home() {
         <ButtonsDiv>
           <Credit />
           <Debt />          
+        </ButtonsDiv>
+        <ButtonsDiv>
+          <ListCredits />
+          <ListDebts />          
         </ButtonsDiv>
       </Main>
       <Footer />
