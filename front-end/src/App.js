@@ -8,6 +8,8 @@ import MoneyIn from './pages/Register/MoneyIn';
 import MoneyOut from './pages/Register/MoneyOut';
 import Credit from './pages/Register/Credit';
 import Debt from './pages/Register/Debt';
+import ListCredits from './pages/Lists/ListCredits';
+import ListDebts from './pages/Lists/ListDebts';
 
 import { UserProvider } from './contexts/UserContext';
 
@@ -64,6 +66,24 @@ export default function App() {
               element={
                 <ProtectedRouteGuard>
                   <Debt />
+                </ProtectedRouteGuard>
+              }>
+            </Route>
+
+            <Route
+              path="/ListCredits"
+              element={
+                <ProtectedRouteGuard>
+                  <ListCredits />
+                </ProtectedRouteGuard>
+              }>
+            </Route>
+
+            <Route
+              path="/listDebts"
+              element={
+                <ProtectedRouteGuard>
+                  <ListDebts />
                 </ProtectedRouteGuard>
               }>
             </Route>

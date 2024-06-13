@@ -1,4 +1,4 @@
-export default function ListCredits() {
+export default function ListCreditsComponents() {
   return (
     <></>
   );

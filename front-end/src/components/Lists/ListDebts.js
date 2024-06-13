@@ -1,4 +1,4 @@
-export default function ListDebts() {
+export default function ListDebtsComponents() {
   return (
     <></>
   );

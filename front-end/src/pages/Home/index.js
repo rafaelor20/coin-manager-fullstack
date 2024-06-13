@@ -8,8 +8,8 @@ import MoneyIn from '../../components/Home/ButtonMoneyIn';
 import MoneyOut from '../../components/Home/ButtonMoneyOut';
 import Debt from '../../components/Home/ButtonDebt';
 import Credit from '../../components/Home/ButtonCredit';
-import ListCredits from '../Lists/ListCredits';
-import ListDebts from '../Lists/ListDebts';
+import ListCredits from '../../components/Home//ButtonLisCredits';
+import ListDebts from '../../components/Home/ButtonListDebts';
 
 import Header from '../../components/Home/Header';
 import Footer from '../../components/Home/Footer';
