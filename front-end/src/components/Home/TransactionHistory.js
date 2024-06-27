@@ -1,5 +1,5 @@
 import React from 'react';
-import { TransactionHistory, Transaction, TransactionDate, TransactionDescription, TransactionAmount } from './css/TransactionHistory';
+import { TransactionHistory, Transaction, TransactionDate, TransactionDescription, TransactionAmount } from './css/TransactionHistory.js';
 
 export default function TransactionContainer(props) {
   const reversedTransactions = [...props.transactions].reverse();

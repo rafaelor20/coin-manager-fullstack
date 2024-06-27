@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import logoutButton from '../../assets/log-out.svg';
-import Link from '../Link';
+import logoutButton from '../assets/log-out.svg';
+import Link from './Link';
 
 export default function Header() {
   return (

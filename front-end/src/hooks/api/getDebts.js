@@ -8,12 +8,12 @@ export default function getDebts() {
   const {
     loading: getDebtsLoading,
     error: getDebtsError,
-    act: getDebts
+    act: useGetDebts
   } = useAsync(() => debtsApi.getDebts(token), false);
 
   return {
     getDebtsLoading,
     getDebtsError,
-    getDebts
+    useGetDebts
   };
 }

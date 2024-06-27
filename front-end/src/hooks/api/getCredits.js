@@ -8,12 +8,12 @@ export default function getCredits() {
   const {
     loading: getCreditsLoading,
     error: getCreditsError,
-    act: getCredits
+    act: useGetCredits
   } = useAsync(() => creditApi.getCredits(token), false);
 
   return {
     getCreditsLoading,
     getCreditsError,
-    getCredits
+    useGetCredits
   };
 }

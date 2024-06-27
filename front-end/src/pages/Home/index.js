@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from './styles';
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
 
 import getTransactions from '../../hooks/api/getTransactions';
 
@@ -11,8 +11,8 @@ import Credit from '../../components/Home/ButtonCredit';
 import ListCredits from '../../components/Home//ButtonLisCredits';
 import ListDebts from '../../components/Home/ButtonListDebts';
 
-import Header from '../../components/Home/Header';
-import Footer from '../../components/Home/Footer';
+import Header from '../../components/Header.js';
+import Footer from '../../components/Footer.js';
 
 export default function Home() {
   const { useGetTransactions } = getTransactions();

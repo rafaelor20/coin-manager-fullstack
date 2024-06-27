@@ -19,7 +19,7 @@ export default function RegisterDebt() {
 
     try {
       // Convert the paymentDate to ISO format before sending it to the backend
-      const isoFormattedDate = new Date(payDate).toISOString();
+      const isoFormattedDate = payDate ? new Date(payDate).toISOString() : null;
 
       // Call saveDebtFunction function with the required data
       await saveDebtFunction({ amount, creditor, description, payDate: isoFormattedDate });
@@ -54,16 +54,16 @@ export default function RegisterDebt() {
           onChange={(e) => setCreditor(e.target.value)}
         />
         <Input
-          label="Payment Date"
-          type="date"
-          value={payDate}
-          onChange={(e) => setPayDate(e.target.value)}
-        />
-        <Input
           label="Description"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+        <Input
+          label="Payment Date"
+          type="date"
+          value={payDate}
+          onChange={(e) => setPayDate(e.target.value)}
         />
         <Button type="submit" color="primary" fullWidth>
           Send
