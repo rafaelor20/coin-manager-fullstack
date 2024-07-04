@@ -1,8 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { History, Entity, Credit, Date, Description, Amount } from './css/History';
 
 export default function DebtContainer(props) {
+  const navigate = useNavigate();
   const reversedTransactions = [...props.debts].reverse();
+
+  const handleNavigation = (id) => {
+    navigate(`/debtPayment/${id}`);
+  };
 
   return (
     <History>
@@ -12,14 +18,16 @@ export default function DebtContainer(props) {
           ? `${new Date(debt.payDate).getMonth() + 1}/${new Date(debt.payDate).getDate()}` 
           : 'No Date';
         return (
-          <Credit key={debt.id}>
-            <Date>{formattedDate}</Date>
-            <Entity>{debt.creditor}</Entity>
-            <Description>{debt.description}</Description>
-            <Amount isNegative={debt.amount < 0}>
-              {debt.amount}
-            </Amount>
-          </Credit>
+          <div key={debt.id} onClick={() => handleNavigation(debt.id)}>
+            <Credit key={debt.id}>
+              <Date>{formattedDate}</Date>
+              <Entity>{debt.debtor}</Entity>
+              <Description>{debt.description}</Description>
+              <Amount isNegative={debt.amount < 0}>
+                {debt.amount}
+              </Amount>
+            </Credit>
+          </div>
         );
       })}
     </History>

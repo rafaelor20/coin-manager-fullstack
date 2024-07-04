@@ -25,7 +25,7 @@ export default function CreditPayment() {
     };
 
     fetchCredit();
-  });
+  }, [creditId]);
   
   return (
     <Container>
@@ -43,4 +43,4 @@ export default function CreditPayment() {
       <Footer/>
     </Container>
   );
-} 
+};
