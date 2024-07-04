@@ -27,8 +27,8 @@ export async function deleteDebt(id, token) {
   return response.data;
 }
 
-export async function payDebt(body, token) {
-  const response = await api.post('/debts/payment', body, {
+export async function payDebt(id, body, token) {
+  const response = await api.post(`/debts/payment/${id}`, body, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

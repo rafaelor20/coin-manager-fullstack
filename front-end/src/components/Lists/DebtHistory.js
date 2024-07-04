@@ -1,5 +1,5 @@
 import React from 'react';
-import { History, Credit, Date, Description, Amount } from './css/History';
+import { History, Entity, Credit, Date, Description, Amount } from './css/History';
 
 export default function DebtContainer(props) {
   const reversedTransactions = [...props.debts].reverse();
@@ -14,6 +14,7 @@ export default function DebtContainer(props) {
         return (
           <Credit key={debt.id}>
             <Date>{formattedDate}</Date>
+            <Entity>{debt.creditor}</Entity>
             <Description>{debt.description}</Description>
             <Amount isNegative={debt.amount < 0}>
               {debt.amount}

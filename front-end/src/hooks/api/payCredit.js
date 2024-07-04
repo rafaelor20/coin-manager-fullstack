@@ -9,7 +9,7 @@ export default function payCredit() {
     loading: payCreditLoading,
     error: payCreditError,
     act: payCredit
-  } = useAsync((data) => creditApi.payCredit(data, token), false);
+  } = useAsync((id, data) => creditApi.payCredit(id, data, token), false);
 
   return {
     payCreditLoading,

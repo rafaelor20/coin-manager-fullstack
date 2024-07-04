@@ -10,6 +10,8 @@ import Credit from './pages/Register/Credit';
 import Debt from './pages/Register/Debt';
 import ListCredits from './pages/Lists/ListCredits';
 import ListDebts from './pages/Lists/ListDebts';
+import CreditPayment from './pages/payment/creditPayment';
+import DebtPayment from './pages/payment/debtPayment';
 
 import { UserProvider } from './contexts/UserContext';
 
@@ -66,6 +68,24 @@ export default function App() {
               element={
                 <ProtectedRouteGuard>
                   <Debt />
+                </ProtectedRouteGuard>
+              }>
+            </Route>
+
+            <Route
+              path="/creditPayment/:creditId"
+              element={
+                <ProtectedRouteGuard>
+                  <CreditPayment />
+                </ProtectedRouteGuard>
+              }>
+            </Route>
+
+            <Route
+              path="/debtPayment/:debtId"
+              element={
+                <ProtectedRouteGuard>
+                  <DebtPayment />
                 </ProtectedRouteGuard>
               }>
             </Route>

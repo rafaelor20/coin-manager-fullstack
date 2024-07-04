@@ -247,14 +247,13 @@ describe('DELETE /credits/delete/:creditId', () => {
   });
 });
 
-describe('POST /credits/payment', () => {
+describe('POST /credits/payment:creditId', () => {
   it('should respond with status 401 if no token is given', async () => {
     const paymentBody = {
       userId: 1,
-      creditId: 1,
       amount: 11,
     };
-    const response = await server.post('/credits/payment').send(paymentBody);
+    const response = await server.post('/credits/payment/1').send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -263,10 +262,9 @@ describe('POST /credits/payment', () => {
     const token = faker.lorem.word();
     const paymentBody = {
       userId: 1,
-      creditId: 1,
       amount: 11,
     };
-    const response = await server.post('/credits/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+    const response = await server.post('/credits/payment/1').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -276,11 +274,10 @@ describe('POST /credits/payment', () => {
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
     const paymentBody = {
       userId: userWithoutSession.id,
-      creditId: 1,
       amount: 11,
     };
 
-    const response = await server.post('/credits/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+    const response = await server.post('/credits/payment/1').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -296,7 +293,7 @@ describe('POST /credits/payment', () => {
           amount: 11,
         };
         const response = await server
-          .post('/credits/payment')
+          .post('/credits/payment/1')
           .set('Authorization', `Bearer ${token}`)
           .send(paymentBody);
 
@@ -316,7 +313,7 @@ describe('POST /credits/payment', () => {
           amount: credit.amount - 1,
         };
         const response = await server
-          .post(`/credits/payment`)
+          .post(`/credits/payment/${credit.id}`)
           .set('Authorization', `Bearer ${token}`)
           .send(paymentBody);
 
@@ -354,7 +351,7 @@ describe('POST /credits/payment', () => {
           amount: credit.amount,
         };
         const response = await server
-          .post(`/credits/payment`)
+          .post(`/credits/payment/${credit.id}`)
           .set('Authorization', `Bearer ${token}`)
           .send(paymentBody);
 

@@ -15,24 +15,16 @@ export const Credit = styled.div`
   height: 18px;
   margin-bottom: 3px;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
 `;
 
 export const Date = styled.span`
   font-weight: bold;
   margin-right: 10px;
-  color: black;
-`;
-
-export const Entity = styled.span`
-  color: black;
-  margin-right: 10px;
 `;
 
 export const Description = styled.span`
   margin-right: 10px;
-  color: black;
 `;
 
 export const Amount = styled.span`

@@ -10,6 +10,6 @@ creditRouter
   .get('/:creditId', getCreditById)
   .post('/store', storeCredit)
   .delete('/delete/:creditId', removeCredit)
-  .post('/payment', creditPayment);
+  .post('/payment/:creditId', creditPayment);
 
 export { creditRouter };

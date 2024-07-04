@@ -9,6 +9,15 @@ export async function getCredits(token) {
   return response.data;
 }
 
+export async function getCreditById(id, token) {
+  const response = await api.get(`/credits/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}
+
 export async function storeCredit(body, token) {
   const response = await api.post('/credits/store', body, {
     headers: {
@@ -27,8 +36,8 @@ export async function deleteCredit(id, token) {
   return response.data;
 }
 
-export async function payCredit(body, token) {
-  const response = await api.post('/credits/payment', body, {
+export async function payCredit(id, body, token) {
+  const response = await api.post(`/credits/payment/${id}`, body, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

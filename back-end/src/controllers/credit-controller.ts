@@ -52,7 +52,8 @@ export async function removeCredit(req: AuthenticatedRequest, res: Response, nex
 export async function creditPayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
-    const { creditId, amount } = req.body;
+    const creditId = Number(req.params.creditId);
+    const { amount } = req.body;
     const result = await creditService.creditPayment(userId, creditId, amount);
     return res.status(httpStatus.OK).send(result);
   } catch (error) {

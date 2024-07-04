@@ -52,7 +52,8 @@ export async function deleteDebt(req: AuthenticatedRequest, res: Response, next:
 export async function debtPayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;
-    const { debtId, payment } = req.body;
+    const debtId = Number(req.params.debtId);
+    const { payment } = req.body;
     const result = await debtService.debtPayment(userId, debtId, payment);
     return res.status(httpStatus.OK).send(result);
   } catch (error) {

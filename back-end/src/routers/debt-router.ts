@@ -10,6 +10,6 @@ debtRouter
   .get('/:debtId', getDebtById)
   .post('/store', storeDebt)
   .delete('/delete/:debtId', deleteDebt)
-  .post('/payment', debtPayment);
+  .post('/payment/:debtId', debtPayment);
 
 export { debtRouter };

@@ -9,7 +9,7 @@ export default function payDebt() {
     loading: payDebtLoading,
     error: payDebtError,
     act: payDebt
-  } = useAsync((data) => debtApi.payDebt(data, token), false);
+  } = useAsync((id, data) => debtApi.payDebt(id, data, token), false);
 
   return {
     payDebtLoading,

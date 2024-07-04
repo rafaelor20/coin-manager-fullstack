@@ -257,14 +257,13 @@ describe('DELETE /debts/delete/:debtId', () => {
   });
 });
 
-describe('POST /debts/payment', () => {
+describe('POST /debts/payment/:debtId', () => {
   it('should respond with status 401 if no token is given', async () => {
     const paymentBody = {
       userId: 1,
-      debtId: 1,
       payment: 11,
     };
-    const response = await server.post('/debts/payment').send(paymentBody);
+    const response = await server.post('/debts/payment/1').send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -273,10 +272,9 @@ describe('POST /debts/payment', () => {
     const token = faker.lorem.word();
     const paymentBody = {
       userId: 1,
-      debtId: 1,
       payment: 11,
     };
-    const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+    const response = await server.post('/debts/payment/1').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -286,11 +284,10 @@ describe('POST /debts/payment', () => {
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
     const paymentBody = {
       userId: userWithoutSession.id,
-      debtId: 1,
       payment: 11,
     };
 
-    const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+    const response = await server.post('/debts/payment/1').set('Authorization', `Bearer ${token}`).send(paymentBody);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -302,10 +299,12 @@ describe('POST /debts/payment', () => {
         const token = await generateValidToken(user);
         const paymentBody = {
           userId: user.id,
-          debtId: 10,
           payment: 11,
         };
-        const response = await server.post('/debts/payment').set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server
+          .post('/debts/payment/10')
+          .set('Authorization', `Bearer ${token}`)
+          .send(paymentBody);
 
         expect(response.status).toBe(httpStatus.UNAUTHORIZED);
       });
@@ -319,10 +318,12 @@ describe('POST /debts/payment', () => {
         await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
-          debtId: debt.id,
           payment: debt.amount - 1,
         };
-        const response = await server.post(`/debts/payment`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server
+          .post(`/debts/payment/${debt.id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
         const { Debt, Transaction } = response.body;
@@ -354,10 +355,12 @@ describe('POST /debts/payment', () => {
         await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
-          debtId: debt.id,
           payment: debt.amount,
         };
-        const response = await server.post(`/debts/payment`).set('Authorization', `Bearer ${token}`).send(paymentBody);
+        const response = await server
+          .post(`/debts/payment/${debt.id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(paymentBody);
 
         expect(response.status).toBe(httpStatus.OK);
         const { Debt, Transaction } = response.body;
