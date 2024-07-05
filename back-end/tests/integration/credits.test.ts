@@ -75,6 +75,70 @@ describe('GET /credits', () => {
             description: expect.any(String),
             debtor: expect.any(String),
             amount: expect.any(Number),
+            paid: false,
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          }),
+        ]),
+      );
+    });
+  });
+});
+
+describe('GET /credits', () => {
+  it('should respond with status 401 if no token is given', async () => {
+    const response = await server.get('/credits/all');
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if given token is not valid', async () => {
+    const token = faker.lorem.word();
+
+    const response = await server.get('/credits/all').set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if there is no session for given token', async () => {
+    const userWithoutSession = await createUser();
+    const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
+
+    const response = await server.get('/credits/all').set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  describe('when token is valid', () => {
+    it('should respond with status 200 and return historic', async () => {
+      const user = await createUser();
+      const user2 = await createUser();
+      const token = await generateValidToken(user);
+      const token2 = await generateValidToken(user2);
+      let credit;
+      let credit2;
+
+      for (let i = 0; i < 10; i++) {
+        credit = await createCredit(user);
+        await server.post('/credits/store').set('Authorization', `Bearer ${token}`).send(credit);
+      }
+
+      for (let i = 0; i < 10; i++) {
+        credit2 = await createCredit(user2);
+        await server.post('/credits/store').set('Authorization', `Bearer ${token2}`).send(credit2);
+      }
+
+      const response = await server.get('/credits/all').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            userId: credit.userId,
+            description: expect.any(String),
+            debtor: expect.any(String),
+            amount: expect.any(Number),
             paid: expect.any(Boolean),
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
             payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),

@@ -3,6 +3,12 @@ import { prisma } from '@/config';
 
 async function getDebts(userId: number) {
   return prisma.debt.findMany({
+    where: { userId: userId, paid: false },
+  });
+}
+
+async function getAllDebts(userId: number) {
+  return prisma.debt.findMany({
     where: { userId: userId },
   });
 }
@@ -39,6 +45,7 @@ async function payDebt(id: number) {
 
 const debtRepository = {
   getDebts,
+  getAllDebts,
   storeDebt,
   getDebtById,
   deleteDebtById,

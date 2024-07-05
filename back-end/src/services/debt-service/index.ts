@@ -48,6 +48,10 @@ async function getDebts(userId: number) {
   return debtRepository.getDebts(userId);
 }
 
+async function getAllDebts(userId: number) {
+  return debtRepository.getAllDebts(userId);
+}
+
 async function storeDebt({ userId, creditor, description, amount, payDate }: CreateDebtParams) {
   checkUserById(userId);
   checkAmount(amount);
@@ -100,6 +104,7 @@ export type CreateDebtParams = Pick<Debt, 'userId' | 'creditor' | 'description' 
 
 const debtService = {
   getDebts,
+  getAllDebts,
   storeDebt,
   deleteDebtById,
   getDebtById,

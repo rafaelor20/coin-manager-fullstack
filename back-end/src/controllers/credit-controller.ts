@@ -16,6 +16,19 @@ export async function getCredits(req: AuthenticatedRequest, res: Response, next:
   }
 }
 
+export async function getAllCredits(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const credits = await creditService.getAllCredits(userId);
+    return res.status(httpStatus.OK).send(credits);
+  } catch (error) {
+    if (error.message === 'UnauthorizedError') {
+      return res.status(httpStatus.UNAUTHORIZED).send({ error: error.message });
+    }
+    return res.status(httpStatus.BAD_REQUEST).send({ error: error.message });
+  }
+}
+
 export async function getCreditById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;

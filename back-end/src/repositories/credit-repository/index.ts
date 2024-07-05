@@ -3,6 +3,12 @@ import { prisma } from '@/config';
 
 async function getCredits(userId: number) {
   return prisma.credit.findMany({
+    where: { userId: userId, paid: false },
+  });
+}
+
+async function getAllCredits(userId: number) {
+  return prisma.credit.findMany({
     where: { userId: userId },
   });
 }
@@ -39,6 +45,7 @@ async function payCredit(id: number) {
 
 const creditRepository = {
   getCredits,
+  getAllCredits,
   storeCredit,
   getCreditById,
   removeCreditById,

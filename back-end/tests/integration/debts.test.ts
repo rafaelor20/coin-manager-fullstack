@@ -75,6 +75,70 @@ describe('GET /debts', () => {
             creditor: expect.any(String),
             description: expect.any(String),
             amount: expect.any(Number),
+            paid: false,
+            createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+            payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
+          }),
+        ]),
+      );
+    });
+  });
+});
+
+describe('GET /debts/all', () => {
+  it('should respond with status 401 if no token is given', async () => {
+    const response = await server.get('/debts/all');
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if given token is not valid', async () => {
+    const token = faker.lorem.word();
+
+    const response = await server.get('/debts/all').set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  it('should respond with status 401 if there is no session for given token', async () => {
+    const userWithoutSession = await createUser();
+    const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
+
+    const response = await server.get('/debts/all').set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+
+  describe('when token is valid', () => {
+    it('should respond with status 200 and return historic', async () => {
+      const user = await createUser();
+      const user2 = await createUser();
+      const token = await generateValidToken(user);
+      const token2 = await generateValidToken(user2);
+      let debt;
+      let debt2;
+
+      for (let i = 0; i < 10; i++) {
+        debt = await createDebt(user);
+        await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
+      }
+
+      for (let i = 0; i < 10; i++) {
+        debt2 = await createDebt(user2);
+        await server.post('/debts/store').set('Authorization', `Bearer ${token2}`).send(debt2);
+      }
+
+      const response = await server.get('/debts/all').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            userId: debt.userId,
+            creditor: expect.any(String),
+            description: expect.any(String),
+            amount: expect.any(Number),
             paid: expect.any(Boolean),
             createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
             payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
@@ -318,7 +382,7 @@ describe('POST /debts/payment/:debtId', () => {
         await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
-          payment: debt.amount - 1,
+          amount: debt.amount - 1,
         };
         const response = await server
           .post(`/debts/payment/${debt.id}`)
@@ -332,7 +396,7 @@ describe('POST /debts/payment/:debtId', () => {
           userId: debt.userId,
           creditor: debt.creditor,
           description: debt.description,
-          amount: debt.amount - paymentBody.payment,
+          amount: debt.amount - paymentBody.amount,
           paid: false,
           createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
           payDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
@@ -341,7 +405,7 @@ describe('POST /debts/payment/:debtId', () => {
           id: expect.any(Number),
           userId: user.id,
           description: `Payment of debt ${Debt.id}`,
-          amount: debt.amount - paymentBody.payment,
+          amount: debt.amount - paymentBody.amount,
           entity: debt.creditor,
           createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/),
         });
@@ -355,7 +419,7 @@ describe('POST /debts/payment/:debtId', () => {
         await server.post('/debts/store').set('Authorization', `Bearer ${token}`).send(debt);
         const paymentBody = {
           userId: user.id,
-          payment: debt.amount,
+          amount: debt.amount,
         };
         const response = await server
           .post(`/debts/payment/${debt.id}`)

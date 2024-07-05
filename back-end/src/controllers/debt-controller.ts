@@ -13,6 +13,16 @@ export async function getDebts(req: AuthenticatedRequest, res: Response, next: N
   }
 }
 
+export async function getAllDebts(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const debts = await debtService.getAllDebts(userId);
+    return res.status(httpStatus.OK).send(debts);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getDebtById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const { userId } = req;

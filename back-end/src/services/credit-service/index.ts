@@ -60,6 +60,10 @@ async function getCredits(userId: number) {
   return creditRepository.getCredits(userId);
 }
 
+async function getAllCredits(userId: number) {
+  return creditRepository.getAllCredits(userId);
+}
+
 async function storeCredit({ userId, description, debtor, amount, payDate }: CreateCreditParams) {
   checkUserById(userId);
   checkAmount(amount);
@@ -112,6 +116,7 @@ export type CreateCreditParams = Pick<Credit, 'userId' | 'debtor' | 'amount' | '
 
 const creditService = {
   getCredits,
+  getAllCredits,
   storeCredit,
   getCreditById,
   removeCredit,
