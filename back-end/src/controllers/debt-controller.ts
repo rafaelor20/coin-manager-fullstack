@@ -53,8 +53,8 @@ export async function debtPayment(req: AuthenticatedRequest, res: Response, next
   try {
     const { userId } = req;
     const debtId = Number(req.params.debtId);
-    const { payment } = req.body;
-    const result = await debtService.debtPayment(userId, debtId, payment);
+    const { amount } = req.body;
+    const result = await debtService.debtPayment(userId, debtId, amount);
     return res.status(httpStatus.OK).send(result);
   } catch (error) {
     if (error.message === 'Invalid Amount Error!') {

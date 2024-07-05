@@ -4,7 +4,6 @@ import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.j
 import getCredits from '../../hooks/api/getCredits';
 
 import Return from '../../components/Lists/ReturnButton';
-import TestCredit from '../../components/Lists/CreditButton.js';
 
 import CreditContainer from '../../components/Lists/CreditHistory.js';
 import Header from '../../components/Header.js';
@@ -47,7 +46,6 @@ export default function ListCredits() {
         </Content>
         <ButtonsDiv>
           <Return />
-          <TestCredit />
         </ButtonsDiv>
       </Main>
       <Footer/>

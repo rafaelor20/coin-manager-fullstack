@@ -4,8 +4,6 @@ import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.j
 import getDebts from '../../hooks/api/getDebts';
 
 import Return from '../../components/Lists/ReturnButton';
-import TestDebt from '../../components/Lists/DebtButton.js';
-
 import DebtContainer from '../../components/Lists/DebtHistory.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
@@ -47,7 +45,6 @@ export default function ListDebts() {
         </Content>
         <ButtonsDiv>
           <Return />
-          <TestDebt />
         </ButtonsDiv>
       </Main>
       <Footer/>
