@@ -16,9 +16,5 @@ RUN npm i
 # faz a compilação do TS para JS
 RUN npm run build
 
-# configura o banco de dados
-RUN npm run dev:migration:generate
-RUN npm run dev:migration:run
-
 # só roda quando darmos docker run
 CMD ["npm", "start"]
