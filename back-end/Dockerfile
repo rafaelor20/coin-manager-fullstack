@@ -17,4 +17,4 @@ RUN npm i
 RUN npm run build
 
 # só roda quando darmos docker run
-CMD ["npm", "start"]
+CMD ["npm", "run", "migrate-and-start"]

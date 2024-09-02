@@ -7,6 +7,7 @@
     "prebuild": "rm -rf dist",
     "build": "ttsc -p tsconfig.build.json",
     "start": "node dist/server.js",
+    "migrate-and-start": "npx prisma migrate deploy && npm start",
     "lint": "eslint .",
     "lint:staged": "lint-staged",
     "migration:run": "prisma migrate deploy",
