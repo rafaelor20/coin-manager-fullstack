@@ -4,6 +4,7 @@ import Header from './Header';
 import Button from '../Form/Button';
 import Input from '../Form/Input';
 import saveTransaction from '../../hooks/api/saveTransaction';
+import Styled from 'styled-components';
 
 export default function RegisterMoneyOut() {
   const [amount, setAmount] = useState('');
@@ -36,32 +37,43 @@ export default function RegisterMoneyOut() {
   };
 
   return (
-    <Container>
-      <Header text="Transaction" />
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Value"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <Input
-          label="Entity"
-          type="text"
-          value={entity}
-          onChange={(e) => setEntity(e.target.value)}
-        />
-        <Input
-          label="description"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Button type="submit" color="primary" fullWidth>
+    <Page>
+      <Container>
+        <Header text="Transaction" />
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Value"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <Input
+            label="Entity"
+            type="text"
+            value={entity}
+            onChange={(e) => setEntity(e.target.value)}
+          />
+          <Input
+            label="description"
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Button type="submit" color="primary" fullWidth>
           Send
-        </Button>
-      </form>
-    </Container>
+          </Button>
+        </form>
+      </Container>
+    </Page>
   );
 }
 
+const Page = Styled.div`
+height: 40%;
+width: 40%;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #8C11BE;
+border-radius: 20px;
+`;

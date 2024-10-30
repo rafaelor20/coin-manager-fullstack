@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import getCreditById from '../../hooks/api/getCreditById.js';
 import payCredit from '../../hooks/api/payCredit.js';
 
+import Page from '../../components/Page.js';
 import Return from '../../components/Payment/ReturnToCredits.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
@@ -46,30 +47,32 @@ export default function CreditPayment() {
   };
   
   return (
-    <Container>
-      <Header/>
-      <Main>
-        <Content>
-          <p>{credit.debtor}</p>
-          <p>{credit.payDate}</p>
-          <CurrentAmount>Current Amount: {credit.amount}</CurrentAmount>
-        </Content>
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Value"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <Button type="submit" color="primary" fullWidth>
+    <Page>
+      <Container>
+        <Header/>
+        <Main>
+          <Content>
+            <p>{credit.debtor}</p>
+            <p>{credit.payDate}</p>
+            <CurrentAmount>Current Amount: {credit.amount}</CurrentAmount>
+          </Content>
+          <form onSubmit={handleSubmit}>
+            <Input
+              label="Value"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <Button type="submit" color="primary" fullWidth>
           Send
-          </Button>
-        </form>
-        <ButtonsDiv>
-          <Return/>
-        </ButtonsDiv>
-      </Main>
-      <Footer/>
-    </Container>
+            </Button>
+          </form>
+          <ButtonsDiv>
+            <Return/>
+          </ButtonsDiv>
+        </Main>
+        <Footer/>
+      </Container>
+    </Page>
   );
 };

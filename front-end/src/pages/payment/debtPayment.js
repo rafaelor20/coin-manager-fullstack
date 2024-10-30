@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
 import { useParams } from 'react-router-dom';
 
+import Page from '../../components/Page.js';
 import Return from '../../components/Payment/ReturnToDebts.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';

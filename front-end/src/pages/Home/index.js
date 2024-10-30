@@ -45,7 +45,6 @@ export default function Home() {
   return (
     <Page>
       <Container>
-        
         <Main>
           <Header/>
           <Content>

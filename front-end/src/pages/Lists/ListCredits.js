@@ -5,6 +5,7 @@ import getCredits from '../../hooks/api/getCredits';
 
 import Return from '../../components/Lists/ReturnButton';
 
+import Page from '../../components/Page.js';
 import CreditContainer from '../../components/Lists/CreditHistory.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
@@ -37,18 +38,20 @@ export default function ListCredits() {
   }, [credits]);
 
   return (
-    <Container>
-      <Header/>
-      <Main>
-        <Content>
-          <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
-          <CreditContainer credits={credits}></CreditContainer>
-        </Content>
-        <ButtonsDiv>
-          <Return />
-        </ButtonsDiv>
-      </Main>
-      <Footer/>
-    </Container>
+    <Page>
+      <Container>
+        <Header/>
+        <Main>
+          <Content>
+            <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
+            <CreditContainer credits={credits}></CreditContainer>
+          </Content>
+          <ButtonsDiv>
+            <Return />
+          </ButtonsDiv>
+        </Main>
+        <Footer/>
+      </Container>
+    </Page>
   );
 }

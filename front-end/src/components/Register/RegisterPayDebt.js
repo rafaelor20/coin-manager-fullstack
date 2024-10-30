@@ -4,6 +4,7 @@ import Header from './Header';
 import Button from '../Form/Button';
 import Input from '../Form/Input';
 import payDebt from '../../hooks/api/payDebt'; 
+import Styled from 'styled-components';
 
 export default function RegisterMoneyOut(props) {
   const [amount, setAmount] = useState('');
@@ -30,20 +31,32 @@ export default function RegisterMoneyOut(props) {
   };
 
   return (
-    <Container>
-      <Header text="Pay Debt" />
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Value"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />  
+    <Page>
+      <Container>
+        <Header text="Pay Debt" />
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Value"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />  
 
-        <Button type="submit" color="primary" fullWidth>
+          <Button type="submit" color="primary" fullWidth>
           Send
-        </Button>
-      </form>
-    </Container>
+          </Button>
+        </form>
+      </Container>
+    </Page>
   );
 }
+
+const Page = Styled.div`
+height: 40%;
+width: 40%;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #8C11BE;
+border-radius: 20px;
+`;

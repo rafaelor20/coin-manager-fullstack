@@ -5,6 +5,7 @@ import Button from '../Form/Button';
 import Input from '../Form/Input';
 import payCredit from '../../hooks/api/payCredit';
 import deleteCredit from '../../services/creditApi';
+import Styled from 'styled-components';
 
 export default function RegisterMoneyOut(props) {
   const [amount, setAmount] = useState('');
@@ -44,27 +45,39 @@ export default function RegisterMoneyOut(props) {
   };
 
   return (
-    <Container>
-      <Header text="Pay Credit" />
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Value"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />  
+    <Page>
+      <Container>
+        <Header text="Pay Credit" />
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Value"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />  
 
-        <Button type="submit" color="primary" fullWidth>
+          <Button type="submit" color="primary" fullWidth>
           Send
-        </Button>
-      </form>
-      <Header text="Delete Credit" />
-      <form onSubmit={handleDelete}>
-        <Button type="submit" color="primary" fullWidth>
+          </Button>
+        </form>
+        <Header text="Delete Credit" />
+        <form onSubmit={handleDelete}>
+          <Button type="submit" color="primary" fullWidth>
           Delete
-        </Button>
-      </form>
+          </Button>
+        </form>
       
-    </Container>
+      </Container>
+    </Page>
   );
 }
+
+const Page = Styled.div`
+height: 40%;
+width: 40%;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #8C11BE;
+border-radius: 20px;
+`;

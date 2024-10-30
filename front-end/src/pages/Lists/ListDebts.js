@@ -3,6 +3,7 @@ import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.j
 
 import getDebts from '../../hooks/api/getDebts';
 
+import Page from '../../components/Page.js';
 import Return from '../../components/Lists/ReturnButton';
 import DebtContainer from '../../components/Lists/DebtHistory.js';
 import Header from '../../components/Header.js';
@@ -36,19 +37,21 @@ export default function ListDebts() {
   }, [debts]);
 
   return (
-    <Container>
-      <Header/>
-      <Main>
-        <Content>
-          <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
-          <DebtContainer debts={debts}></DebtContainer>
-        </Content>
-        <ButtonsDiv>
-          <Return />
-        </ButtonsDiv>
-      </Main>
-      <Footer/>
-    </Container>
+    <Page>
+      <Container>
+        <Header/>
+        <Main>
+          <Content>
+            <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
+            <DebtContainer debts={debts}></DebtContainer>
+          </Content>
+          <ButtonsDiv>
+            <Return />
+          </ButtonsDiv>
+        </Main>
+        <Footer/>
+      </Container>
+    </Page>
   );
 }
 
