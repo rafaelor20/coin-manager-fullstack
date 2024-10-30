@@ -37,7 +37,7 @@ export default function SignIn() {
   return (
     <AuthLayout >
       <Row>
-        <img src={logo} alt="Coin Manager Logo" width="60px" />
+        <img src={logo} alt="Coin Manager Logo" width="140px" />
         <Title>SignIn</Title>
       </Row>
       <Row>

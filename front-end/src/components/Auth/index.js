@@ -14,11 +14,13 @@ export const StyledContainer = styled(Container)`
 export const Title = styled.h1`
   font-size: 32px;
   margin-top: 10px;
+  color: white;
 `;
 
 export const Label = styled.h1`
   font-size: 24px;
   margin-bottom: 10px;
+  color: white;
 `;
 
 export const Row = styled.div`
