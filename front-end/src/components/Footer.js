@@ -13,6 +13,6 @@ const Container = styled.div`
   font-size: 14px;
   color: #888;
   p{
-    color: black;
+    color: white;
   }
 `;
