@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Page from '../../components/Page';
 import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
 
 import getTransactions from '../../hooks/api/getTransactions';
@@ -42,27 +43,30 @@ export default function Home() {
   }, [transactions]);
 
   return (
-    <Container>
-      <Header/>
-      <Main>
-        <Content>
-          <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
-          <TransactionContainer transactions={transactions}></TransactionContainer>
-        </Content>
-        <ButtonsDiv>
-          <MoneyIn />
-          <MoneyOut />
-        </ButtonsDiv>
-        <ButtonsDiv>
-          <Credit />
-          <Debt />          
-        </ButtonsDiv>
-        <ButtonsDiv>
-          <ListCredits />
-          <ListDebts />          
-        </ButtonsDiv>
-      </Main>
-      <Footer />
-    </Container>
+    <Page>
+      <Container>
+        
+        <Main>
+          <Header/>
+          <Content>
+            <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
+            <TransactionContainer transactions={transactions}></TransactionContainer>
+          </Content>
+          <ButtonsDiv>
+            <MoneyIn />
+            <MoneyOut />
+          </ButtonsDiv>
+          <ButtonsDiv>
+            <Credit />
+            <Debt />          
+          </ButtonsDiv>
+          <ButtonsDiv>
+            <ListCredits />
+            <ListDebts />          
+          </ButtonsDiv>
+        </Main>
+        <Footer />
+      </Container>
+    </Page>
   );
 };

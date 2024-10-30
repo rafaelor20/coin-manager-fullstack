@@ -41,7 +41,7 @@ export default function SignUp() {
   return (
     <AuthLayout>
       <Row>
-        <img src={logo} alt="Coin Manager Logo" width="60px" />
+        <img src={logo} alt="Coin Manager Logo" width="140px" />
         <Title>SignUp</Title>
       </Row>
       <Row>
