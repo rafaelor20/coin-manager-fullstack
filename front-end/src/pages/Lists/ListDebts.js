@@ -3,11 +3,10 @@ import { toast } from 'react-toastify';
 
 import getDebts from '../../hooks/api/getDebts';
 
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
+import { Container, Main, Content, CurrentAmount } from '../../components/Lists/styles.js';
 import Page from '../../components/Page.js';
-import Return from '../../components/Lists/ReturnButton';
 import DebtContainer from '../../components/Lists/DebtHistory.js';
-import Header from '../../components/Header.js';
+import Header from '../../components/Lists/Header.js';
 import Footer from '../../components/Footer.js';
 
 export default function ListDebts() {
@@ -40,15 +39,12 @@ export default function ListDebts() {
   return (
     <Page>
       <Container>
-        <Header/>
+        <Header text="Return"/>
         <Main>
           <Content>
             <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
             <DebtContainer debts={debts}></DebtContainer>
           </Content>
-          <ButtonsDiv>
-            <Return />
-          </ButtonsDiv>
         </Main>
         <Footer/>
       </Container>

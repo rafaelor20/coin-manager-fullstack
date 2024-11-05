@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import getCredits from '../../hooks/api/getCredits';
 
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
-import Return from '../../components/Lists/ReturnButton';
+import { Container, Main, Content, CurrentAmount } from '../../components/Lists/styles.js';
 
 import Page from '../../components/Page.js';
 import CreditContainer from '../../components/Lists/CreditHistory.js';
-import Header from '../../components/Header.js';
+import Header from '../../components/Lists/Header.js';
 import Footer from '../../components/Footer.js';
 
 export default function ListCredits() {
@@ -40,15 +39,12 @@ export default function ListCredits() {
   return (
     <Page>
       <Container>
-        <Header/>
+        <Header text="Return"/>
         <Main>
           <Content>
             <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
             <CreditContainer credits={credits}></CreditContainer>
           </Content>
-          <ButtonsDiv>
-            <Return />
-          </ButtonsDiv>
         </Main>
         <Footer/>
       </Container>
