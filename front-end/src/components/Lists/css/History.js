@@ -19,7 +19,7 @@ export const Credit = styled.div`
   justify-content: space-between;
 `;
 
-export const Date = styled.span`
+export const DateSpan = styled.span`
   font-weight: bold;
   margin-right: 10px;
   color: black;

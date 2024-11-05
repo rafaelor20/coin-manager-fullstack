@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import Page from '../../components/Page.js';
 import Return from '../../components/Payment/ReturnToDebts.js';
@@ -25,7 +26,7 @@ export default function DebtPayment() {
         const response = await useGetDebtById(debtId);
         setDebt(response);
       } catch (error) {
-        console.error('Error fetching debt:', error);
+        toast('Error fetching debt:', error);
       }
     };
 
@@ -40,37 +41,39 @@ export default function DebtPayment() {
 
       setAmount(0);
 
-      console.log('Debt paid successfully!');
+      toast('Debt paid successfully!');
     } catch (error) {
-      console.error('Error paying debt:', error.message);
+      toast('Error paying debt:', error.message);
     }
   };
 
   return (
-    <Container>
-      <Header/>
-      <Main>
-        <Content>
-          <p>{debt.creditor}</p>
-          <p>{debt.payDate}</p>
-          <CurrentAmount>Current Amount: {debt.amount}</CurrentAmount>
-        </Content>
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Value"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <Button type="submit" color="primary" fullWidth>
+    <Page>
+      <Container>
+        <Header/>
+        <Main>
+          <Content>
+            <p>{debt.creditor}</p>
+            <p>{debt.payDate}</p>
+            <CurrentAmount>Current Amount: {debt.amount}</CurrentAmount>
+          </Content>
+          <form onSubmit={handleSubmit}>
+            <Input
+              label="Value"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <Button type="submit" color="primary" fullWidth>
           Send
-          </Button>
-        </form>
-        <ButtonsDiv>
-          <Return/>
-        </ButtonsDiv>
-      </Main>
-      <Footer/>
-    </Container>
+            </Button>
+          </form>
+          <ButtonsDiv>
+            <Return/>
+          </ButtonsDiv>
+        </Main>
+        <Footer/>
+      </Container>
+    </Page>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
+import { toast } from 'react-toastify';
 
 import getDebts from '../../hooks/api/getDebts';
 
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import Page from '../../components/Page.js';
 import Return from '../../components/Lists/ReturnButton';
 import DebtContainer from '../../components/Lists/DebtHistory.js';
@@ -20,7 +21,7 @@ export default function ListDebts() {
         const response = await useGetDebts();
         setDebts(response);
       } catch (error) {
-        console.error('Error fetching debts:', error);
+        toast('Error fetching debts:', error);
       }
     };
 

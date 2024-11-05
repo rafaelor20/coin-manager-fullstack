@@ -25,7 +25,7 @@ export default function App() {
         <Router>
           <Routes>
             <Route path="/" element={<SignIn />} />
-            <Route path="/Sign-up" element={<SignUp />} />
+            <Route path="/sign-up" element={<SignUp />} />
             
             <Route
               path="/home"
@@ -91,7 +91,7 @@ export default function App() {
             </Route>
 
             <Route
-              path="/ListCredits"
+              path="/listCredits"
               element={
                 <ProtectedRouteGuard>
                   <ListCredits />

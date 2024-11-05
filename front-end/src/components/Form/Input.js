@@ -12,6 +12,7 @@ const Input = ({ label, type, value, onChange }) => {
 export default Input;
 
 const StyledInput = styled.input`
+  width: 100%;
 ::placeholder {
   color: black,
 }`;

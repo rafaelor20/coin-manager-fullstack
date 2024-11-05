@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
+import { toast } from 'react-toastify';
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import { useParams } from 'react-router-dom';
 
 import getCreditById from '../../hooks/api/getCreditById.js';
@@ -25,7 +26,7 @@ export default function CreditPayment() {
         const response = await useGetCreditById(creditId);
         setCredit(response);
       } catch (error) {
-        console.error('Error fetching credit:', error);
+        toast('Error fetching credit:', error);
       }
     };
 
@@ -40,9 +41,9 @@ export default function CreditPayment() {
 
       setAmount(0);
 
-      console.log('Credit paid successfully!');
+      toast('Credit paid successfully!');
     } catch (error) {
-      console.error('Error paying credit:', error.message);
+      toast('Error paying credit:', error.message);
     }
   };
   

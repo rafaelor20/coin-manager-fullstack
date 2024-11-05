@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Page from '../../components/Page';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 
 import getTransactions from '../../hooks/api/getTransactions';
 
 import TransactionContainer from '../../components/Home/TransactionHistory';
-import MoneyIn from '../../components/Home/ButtonMoneyIn';
-import MoneyOut from '../../components/Home/ButtonMoneyOut';
-import Debt from '../../components/Home/ButtonDebt';
-import Credit from '../../components/Home/ButtonCredit';
-import ListCredits from '../../components/Home//ButtonLisCredits';
-import ListDebts from '../../components/Home/ButtonListDebts';
-
+import RegisterButton from '../../components/Home/RegisterButton.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 
@@ -26,7 +20,7 @@ export default function Home() {
         const response = await useGetTransactions();
         setTransactions(response);
       } catch (error) {
-        console.error('Error fetching transactions:', error);
+        alert('Error fetching transactions: ' + error.message);
       }
     };
 
@@ -45,23 +39,19 @@ export default function Home() {
   return (
     <Page>
       <Container>
+        <Header/>
         <Main>
-          <Header/>
           <Content>
             <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
             <TransactionContainer transactions={transactions}></TransactionContainer>
           </Content>
           <ButtonsDiv>
-            <MoneyIn />
-            <MoneyOut />
-          </ButtonsDiv>
-          <ButtonsDiv>
-            <Credit />
-            <Debt />          
-          </ButtonsDiv>
-          <ButtonsDiv>
-            <ListCredits />
-            <ListDebts />          
+            <RegisterButton to="/moneyIn" text="Register Money In"/>
+            <RegisterButton to="/moneyOut" text="Register Money Out"/>
+            <RegisterButton to="/credit" text="Register Credit"/>
+            <RegisterButton to="/debt" text="Register Debt"/>          
+            <RegisterButton to="/listCredits" text="Show Credits"/>
+            <RegisterButton to="/listDebts" text="Show Debts"/>          
           </ButtonsDiv>
         </Main>
         <Footer />

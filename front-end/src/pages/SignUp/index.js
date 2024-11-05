@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-import AuthLayout from '../../layouts/Auth';
-
+import Page from '../../components/Page';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
-import { Row, Title, Label } from '../../components/Auth';
+import { Container, Row, Title, Label } from '../../components/Auth';
 import Link from '../../components/Link';
 
 import useSignUp from '../../hooks/api/useSignUp';
@@ -39,44 +38,46 @@ export default function SignUp() {
   }
 
   return (
-    <AuthLayout>
-      <Row>
-        <img src={logo} alt="Coin Manager Logo" width="140px" />
-        <Title>SignUp</Title>
-      </Row>
-      <Row>
-        <Label>Inscrição</Label>
-        <form onSubmit={submit}>
-          <Input
-            label="E-mail"
-            type="text"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            label="Senha"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Input
-            label="Repita sua senha"
-            type="password"
-            fullWidth
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>
+    <Page>
+      <Container>
+        <Row>
+          <img src={logo} alt="Coin Manager Logo" width="140px" />
+          <Title>SignUp</Title>
+        </Row>
+        <Row>
+          <Label>Inscrição</Label>
+          <form onSubmit={submit}>
+            <Input
+              label="E-mail"
+              type="text"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              label="Senha"
+              type="password"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              label="Repita sua senha"
+              type="password"
+              fullWidth
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>
             Inscrever
-          </Button>
-        </form>
-      </Row>
-      <Row>
-        <Link to="/">Já está inscrito? Faça login</Link>
-      </Row>
-    </AuthLayout>
+            </Button>
+          </form>
+        </Row>
+        <Row>
+          <Link to="/">Já está inscrito? Faça login</Link>
+        </Row>
+      </Container>
+    </Page>
   );
 }
 

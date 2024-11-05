@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import Page from '../components/Page';
-import { StyledContainer as Container } from '../components/Auth';
+import { StyledContainer as Container } from './Auth';
 
 export default function Dashboard({ background, children }) {
   return (

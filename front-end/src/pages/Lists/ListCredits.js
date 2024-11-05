@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../styles.js';
-
+import { toast } from 'react-toastify';
 import getCredits from '../../hooks/api/getCredits';
 
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import Return from '../../components/Lists/ReturnButton';
 
 import Page from '../../components/Page.js';
@@ -21,7 +21,7 @@ export default function ListCredits() {
         const response = await useGetCredits();
         setCredits(response);
       } catch (error) {
-        console.error('Error fetching credits:', error);
+        toast('Error fetching credits:', error);
       }
     };
 
