@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
+import { Container, Main, Content, CurrentAmount } from '../../components/styles.js';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Page from '../../components/Page.js';
-import Return from '../../components/Payment/ReturnToDebts.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 import Button from '../../components/Form/Button.js';
