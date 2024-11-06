@@ -56,17 +56,19 @@ export default function CreditPayment() {
             <p>{credit.payDate}</p>
             <CurrentAmount>Current Amount: {credit.amount}</CurrentAmount>
           </Content>
-          <form onSubmit={handleSubmit}>
-            <Input
-              label="Value"
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Button type="submit" color="primary" fullWidth>
+          <Main>
+            <form onSubmit={handleSubmit}>
+              <Input
+                label="Value"
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+              <Button type="submit" color="primary" fullWidth>
               Send
-            </Button>
-          </form>
+              </Button>
+            </form>
+          </Main>
         </Main>
         <Footer/>
       </Container>

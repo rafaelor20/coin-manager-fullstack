@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { Container, Main, Content, CurrentAmount } from '../../components/styles.js';
+import { Container, Main, Content, CurrentAmount } from '../../components/Payment/styles.js';
 import Page from '../../components/Page.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
@@ -56,17 +56,19 @@ export default function DebtPayment() {
             <p>{debt.payDate}</p>
             <CurrentAmount>Current Amount: {debt.amount}</CurrentAmount>
           </Content>
-          <form onSubmit={handleSubmit}>
-            <Input
-              label="Value"
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Button type="submit" color="primary" fullWidth>
+          <Main>
+            <form onSubmit={handleSubmit}>
+              <Input
+                label="Value"
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+              <Button type="submit" color="primary" fullWidth>
               Send
-            </Button>
-          </form>
+              </Button>
+            </form>
+          </Main>
         </Main>
         <Footer/>
       </Container>
