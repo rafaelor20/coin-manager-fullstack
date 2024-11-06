@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import { useParams } from 'react-router-dom';
 
 import getCreditById from '../../hooks/api/getCreditById.js';
 import payCredit from '../../hooks/api/payCredit.js';
 
+import { Container, Main, Content, CurrentAmount } from '../../components/Payment/styles.js';
+import Header from '../../components/Payment/Header.js';
 import Page from '../../components/Page.js';
-import Return from '../../components/Payment/ReturnToCredits.js';
-import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 import Button from '../../components/Form/Button.js';
 import Input from '../../components/Form/Input.js';
@@ -50,7 +49,7 @@ export default function CreditPayment() {
   return (
     <Page>
       <Container>
-        <Header/>
+        <Header text="To credits"/>
         <Main>
           <Content>
             <p>{credit.debtor}</p>
@@ -68,9 +67,6 @@ export default function CreditPayment() {
           Send
             </Button>
           </form>
-          <ButtonsDiv>
-            <Return/>
-          </ButtonsDiv>
         </Main>
         <Footer/>
       </Container>
