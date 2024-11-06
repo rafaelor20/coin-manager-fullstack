@@ -6,7 +6,7 @@ import getCreditById from '../../hooks/api/getCreditById.js';
 import payCredit from '../../hooks/api/payCredit.js';
 
 import { Container, Main, Content, CurrentAmount } from '../../components/Payment/styles.js';
-import Header from '../../components/Payment/Header.js';
+import Header from '../../components/Header.js';
 import Page from '../../components/Page.js';
 import Footer from '../../components/Footer.js';
 import Button from '../../components/Form/Button.js';

@@ -50,7 +50,7 @@ export default function DebtPayment() {
   return (
     <Page>
       <Container>
-        <Header/>
+        <Header text="To Debts"/>
         <Main>
           <Content>
             <p>{debt.creditor}</p>

@@ -7,7 +7,7 @@ export default function Header() {
     <Container>
       <p>Coin Manager</p>
       <Link to="/">
-        <img src={logoutButton} alt="Log out button" width="23" height="24"/>
+        <img src={logoutButton} alt="Log out button" width="23" height="24" />
       </Link>
       
     </Container>
@@ -22,4 +22,5 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  filter: invert(1);
 `;
