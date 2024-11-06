@@ -69,7 +69,7 @@ export default function MoneyIn() {
             onChange={(e) => setPayDate(e.target.value)}
           />
           <Button type="submit" color="primary" fullWidth>
-          Send
+            Register
           </Button>
         </form>
       </Container>

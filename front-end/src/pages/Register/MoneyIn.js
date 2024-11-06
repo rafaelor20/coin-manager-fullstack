@@ -37,7 +37,7 @@ export default function MoneyIn() {
   return (
     <Page>
       <Container>
-        <Header text="Transaction" to="/home"/>
+        <Header text="Receipt" to="/home"/>
         <form onSubmit={handleSubmit}>
           <Input
             label="Value"
@@ -58,7 +58,7 @@ export default function MoneyIn() {
             onChange={(e) => setDescription(e.target.value)}
           />
           <Button type="submit" color="primary" fullWidth>
-          Send
+            Register
           </Button>
         </form>
       </Container>
