@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Main, Content, CurrentAmount } from '../../components/styles.js';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { Container, Main, Content, CurrentAmount } from '../../components/styles.js';
 import Page from '../../components/Page.js';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
