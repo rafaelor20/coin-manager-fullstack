@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Page from '../../components/Page';
 import { Container } from '../../components/Register/styles';
-import Header from '../../components/Register/Header';
+import Header from '../../components/Header';
 import Button from '../../components/Form/Button';
 import Input from '../../components/Form/Input';
 

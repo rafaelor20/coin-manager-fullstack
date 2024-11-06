@@ -6,7 +6,7 @@ import getTransactions from '../../hooks/api/getTransactions';
 
 import TransactionContainer from '../../components/Home/TransactionHistory';
 import RegisterButton from '../../components/Home/RegisterButton.js';
-import Header from '../../components/Header.js';
+import Header from '../../components/Home/Header.js';
 import Footer from '../../components/Footer.js';
 
 export default function Home() {
