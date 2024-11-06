@@ -19,7 +19,7 @@ export const Main = styled.div`
 
 export const Content = styled.div`
   background-color: #fff;
-  padding: 20px;
+  padding: 15px 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -28,7 +28,7 @@ export const Content = styled.div`
 `;
 
 export const CurrentAmount = styled.div`
-  font-size: 28px;
+  font-size: 23px;
   font-weight: bold;
   margin-bottom: 20px;
 `;

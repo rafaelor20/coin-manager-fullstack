@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Page from '../../components/Page';
-import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
+import { toast } from 'react-toastify';
 
 import getTransactions from '../../hooks/api/getTransactions';
 
+import Page from '../../components/Page';
+import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
 import TransactionContainer from '../../components/Home/TransactionHistory';
 import RegisterButton from '../../components/Home/RegisterButton.js';
 import Header from '../../components/Home/Header.js';
@@ -20,7 +21,7 @@ export default function Home() {
         const response = await useGetTransactions();
         setTransactions(response);
       } catch (error) {
-        alert('Error fetching transactions: ' + error.message);
+        toast('Error fetching transactions: ' + error.message);
       }
     };
 
@@ -46,8 +47,8 @@ export default function Home() {
             <TransactionContainer transactions={transactions}></TransactionContainer>
           </Content>
           <ButtonsDiv>
-            <RegisterButton to="/moneyIn" text="Register Money In"/>
-            <RegisterButton to="/moneyOut" text="Register Money Out"/>
+            <RegisterButton to="/moneyIn" text="Register Receipt"/>
+            <RegisterButton to="/moneyOut" text="Register Payment"/>
             <RegisterButton to="/credit" text="Register Credit"/>
             <RegisterButton to="/debt" text="Register Debt"/>          
             <RegisterButton to="/listCredits" text="Show Credits"/>
