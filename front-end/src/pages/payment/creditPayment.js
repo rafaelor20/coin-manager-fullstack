@@ -64,7 +64,7 @@ export default function CreditPayment() {
               onChange={(e) => setAmount(e.target.value)}
             />
             <Button type="submit" color="primary" fullWidth>
-          Send
+              Send
             </Button>
           </form>
         </Main>

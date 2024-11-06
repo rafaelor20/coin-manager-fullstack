@@ -65,12 +65,9 @@ export default function DebtPayment() {
               onChange={(e) => setAmount(e.target.value)}
             />
             <Button type="submit" color="primary" fullWidth>
-          Send
+              Send
             </Button>
           </form>
-          <ButtonsDiv>
-            <Return/>
-          </ButtonsDiv>
         </Main>
         <Footer/>
       </Container>
