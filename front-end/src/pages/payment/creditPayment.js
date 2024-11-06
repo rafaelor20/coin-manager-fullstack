@@ -49,7 +49,7 @@ export default function CreditPayment() {
   return (
     <Page>
       <Container>
-        <Header text="To credits"/>
+        <Header text="To credits" to="/listCredits"/>
         <Main>
           <Content>
             <p>{credit.debtor}</p>

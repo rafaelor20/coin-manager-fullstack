@@ -6,7 +6,7 @@ export default function Header(props) {
   return (
     <Container>
       <p>{props.text}</p>
-      <Link to="/home">
+      <Link to={props.to}>
         <img src={backSquare} alt="return button" width="23" height="24" filter='invert(1)' style={{  margin: '10px 0px 0px 0px' }}/>
       </Link>
     </Container>

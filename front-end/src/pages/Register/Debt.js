@@ -43,7 +43,7 @@ export default function MoneyIn() {
   return (
     <Page>
       <Container>
-        <Header text="Debt" />
+        <Header text="Debt" to="/home"/>
         <form onSubmit={handleSubmit}>
           <Input
             label="Value"
