@@ -1,20 +1,20 @@
-# busca imagem base do node
+# fetch base image of Node
 FROM node:16
 
-# usa essa pasta como diretório de trabalho (tipo um CD)
+# use this folder as the working directory (like a CD command)
 WORKDIR /usr/src
 
-# copia o diretório atual para o workdir
+# copy the current directory to the workdir
 COPY . .
 
-# "expoe" a porta 5000
+# "expose" port 5000
 EXPOSE 5000
 
-# baixa as dependências
+# download dependencies
 RUN npm i
 
-# faz a compilação do TS para JS
+# compile TS to JS
 RUN npm run build
 
-# só roda quando darmos docker run
+# run prisma migrations and start the server
 CMD ["npm", "run", "migrate-and-start"]
