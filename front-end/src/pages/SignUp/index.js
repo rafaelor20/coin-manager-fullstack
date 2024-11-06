@@ -42,10 +42,10 @@ export default function SignUp() {
       <Container>
         <Row>
           <img src={logo} alt="Coin Manager Logo" width="140px" />
-          <Title>SignUp</Title>
+          <Title>Coin Manager</Title>
         </Row>
         <Row>
-          <Label>Inscrição</Label>
+          <Label></Label>
           <form onSubmit={submit}>
             <Input
               label="E-mail"
@@ -55,26 +55,26 @@ export default function SignUp() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input
-              label="Senha"
+              label="Password"
               type="password"
               fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Input
-              label="Repita sua senha"
+              label="Password again"
               type="password"
               fullWidth
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>
-            Inscrever
+              SUBSCRIBE
             </Button>
           </form>
         </Row>
         <Row>
-          <Link to="/">Já está inscrito? Faça login</Link>
+          <Link to="/">Already subscribed?</Link>
         </Row>
       </Container>
     </Page>

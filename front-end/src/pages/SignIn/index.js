@@ -27,10 +27,10 @@ export default function SignIn() {
     try {
       const userData = await signIn(email, password);
       setUserData(userData);
-      toast('Login realizado com sucesso!');
+      //toast('Login!');
       navigate('/home');
     } catch (err) {
-      toast('Não foi possível fazer o login!');
+      toast('Something is wrong!');
     }
   }
 
@@ -39,18 +39,18 @@ export default function SignIn() {
       <Container>
         <Row>
           <img src={logo} alt="Coin Manager Logo" width="140px" />
-          <Title>SignIn</Title>
+          <Title>Coin Manager</Title>
         </Row>
         <Row>
-          <Label>Entrar</Label>
+          <Label></Label>
           <form onSubmit={submit}>
             <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-            <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-            <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
+            <Input label="Password" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
+            <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>LOGIN</Button>
           </form>
         </Row>
         <Row>
-          <Link to="/Sign-up">Não possui login? Inscreva-se</Link>
+          <Link to="/Sign-up">Create a account here!</Link>
         </Row>
       </Container>
     </Page>
