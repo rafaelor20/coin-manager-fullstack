@@ -1,19 +1,20 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 
-const JWT_SECRET = 'sua_chave_secreta';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 async function main() {
-  const token1 = jwt.sign({ email: 'user1@example.com' }, JWT_SECRET, { expiresIn: '7d' });
-  const token2 = jwt.sign({ email: 'user2@example.com' }, JWT_SECRET, { expiresIn: '7d' });
+  const hashedPassword1 = await bcrypt.hash('user1Password123', 12);
+  const hashedPassword2 = await bcrypt.hash('user2Password456', 12);
 
   const user1 = await prisma.user.create({
     data: {
       email: 'user1@example.com',
-      password: token1,
+      password: hashedPassword1,
       amount: 1000,
       sessions: {
         create: [
@@ -114,7 +115,7 @@ async function main() {
   const user2 = await prisma.user.create({
     data: {
       email: 'user2@example.com',
-      password: token2,
+      password: hashedPassword2,
       amount: 500,
       sessions: {
         create: [
