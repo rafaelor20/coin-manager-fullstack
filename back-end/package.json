@@ -8,6 +8,7 @@
     "build": "ttsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "migrate-and-start": "npx prisma migrate deploy && npm start",
+    "migrate-seed-and-start": "npx prisma migrate deploy && npx prisma run seed && npm start",
     "lint": "eslint .",
     "lint:staged": "lint-staged",
     "migration:run": "prisma migrate deploy",
