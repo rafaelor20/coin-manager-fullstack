@@ -48,15 +48,19 @@ export const TransactionDate = styled.span`
   font-size: 18px;
   font-weight: bold;
   margin-right: 10px;
+  flex: 0 0 auto;
 `;
 
 export const TransactionDescription = styled.span`
   margin-right: 10px;
   font-size: 18px;
+  margin-left: 10px;
+  flex: 1;
 `;
 
 export const TransactionAmount = styled.span`
   font-size: 18px;
+  flex: 0 0 auto;
   color: ${({ isNegative }) => (isNegative ? 'red' : 'green')};
 `;
 
