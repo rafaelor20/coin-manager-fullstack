@@ -10,9 +10,6 @@ export const History = styled.div`
   h3{
     margin-bottom: 5px;
   }
-  div{
-    width: 100%;
-  }
 `;
 
 export const Credit = styled.div`
@@ -22,6 +19,9 @@ export const Credit = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  div{
+    min-width: 60px;
+  }
 `;
 
 export const DateSpan = styled.span`

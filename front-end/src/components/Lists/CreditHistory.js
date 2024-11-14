@@ -20,7 +20,9 @@ export default function CreditContainer(props) {
         return (
           <div key={credit.id} onClick={() => handleNavigation(credit.id)}>
             <Credit key={credit.id}>
-              <DateSpan>{formattedDate}</DateSpan>
+              <div>
+                <DateSpan>{formattedDate}</DateSpan>
+              </div>
               <Description>{credit.description}</Description>
               <Amount isNegative={credit.amount < 0}>
                 {credit.amount}

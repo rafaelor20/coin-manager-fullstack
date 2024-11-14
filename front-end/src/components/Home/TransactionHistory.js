@@ -42,12 +42,14 @@ export const Transaction = styled.div`
   margin-bottom: 3px;
   display: flex;
   justify-content: space-between;
+  div{
+    min-width: 60px;
+  }
 `;
 
 export const TransactionDate = styled.span`
   font-size: 18px;
   font-weight: bold;
-  margin-right: 10px;
   flex: 0 0 auto;
 `;
 
