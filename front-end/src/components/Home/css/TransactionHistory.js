@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const TransactionHistory = styled.div`
   height: 80%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
