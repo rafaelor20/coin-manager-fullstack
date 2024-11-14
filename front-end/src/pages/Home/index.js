@@ -5,7 +5,7 @@ import getTransactions from '../../hooks/api/getTransactions';
 
 import Page from '../../components/Page';
 import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
-import TransactionContainer from '../../components/Home/TransactionHistory';
+import TransactionContainer from '../../components/TransactionHistory';
 import RegisterButton from '../../components/Home/RegisterButton.js';
 import Header from '../../components/Home/Header.js';
 import Footer from '../../components/Footer.js';
@@ -44,7 +44,7 @@ export default function Home() {
         <Main>
           <Content>
             <CurrentAmount>Current Amount: ${currentAmount}</CurrentAmount>
-            <TransactionContainer transactions={transactions}></TransactionContainer>
+            <TransactionContainer text='Transactions' transactions={transactions}></TransactionContainer>
           </Content>
           <ButtonsDiv>
             <RegisterButton to="/moneyIn" text="Register Receipt"/>

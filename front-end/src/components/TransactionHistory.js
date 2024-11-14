@@ -1,12 +1,12 @@
 import React from 'react';
-import { TransactionHistory, Transaction, TransactionDate, TransactionDescription, TransactionAmount } from './css/TransactionHistory.js';
+import styled from 'styled-components';
 
 export default function TransactionContainer(props) {
   const reversedTransactions = [...props.transactions].reverse();
 
   return (
     <TransactionHistory>
-      <h3>Transactions:</h3>
+      <h3>{props.text}:</h3>
       {reversedTransactions.map((transaction) => {
         const createdAt = new Date(transaction.createdAt);
         const formattedDate = `${createdAt.getMonth() + 1}/${createdAt.getDate()}`;
@@ -23,3 +23,40 @@ export default function TransactionContainer(props) {
     </TransactionHistory>
   );
 }
+
+export const TransactionHistory = styled.div`
+  height: 80%;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  text-align: left;
+  h3{
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+`;
+
+export const Transaction = styled.div`
+  height: 18px;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const TransactionDate = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+`;
+
+export const TransactionDescription = styled.span`
+  margin-right: 10px;
+  font-size: 18px;
+`;
+
+export const TransactionAmount = styled.span`
+  font-size: 18px;
+  color: ${({ isNegative }) => (isNegative ? 'red' : 'green')};
+`;
+
