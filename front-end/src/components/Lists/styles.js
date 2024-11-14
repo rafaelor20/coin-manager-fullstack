@@ -24,7 +24,7 @@ export const Content = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   height: 70vh;
-  width: 80%;
+  width: 90%;
 `;
 
 export const CurrentAmount = styled.div`

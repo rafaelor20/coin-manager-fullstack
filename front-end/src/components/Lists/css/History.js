@@ -2,12 +2,16 @@ import styled from 'styled-components';
 
 export const History = styled.div`
   height: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   text-align: left;
   h3{
     margin-bottom: 5px;
+  }
+  div{
+    width: 100%;
   }
 `;
 
@@ -17,24 +21,27 @@ export const Credit = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const DateSpan = styled.span`
   font-weight: bold;
-  margin-right: 10px;
   color: black;
+  flex: 0 0 auto;
 `;
 
 export const Entity = styled.span`
   color: black;
-  margin-right: 10px;
 `;
 
 export const Description = styled.span`
-  margin-right: 10px;
   color: black;
+  text-align: left;
+  margin-left: 10px;
+  flex: 1;
 `;
 
 export const Amount = styled.span`
-  color: ${({ isNegative }) => (isNegative ? 'red' : 'green')};
+  color: black;
+  flex: 0 0 auto;
 `;

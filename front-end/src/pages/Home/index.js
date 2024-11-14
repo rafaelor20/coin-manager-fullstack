@@ -5,7 +5,7 @@ import getTransactions from '../../hooks/api/getTransactions';
 
 import Page from '../../components/Page';
 import { Container, Main, Content, CurrentAmount, ButtonsDiv } from '../../components/styles.js';
-import TransactionContainer from '../../components/TransactionHistory';
+import TransactionContainer from '../../components/Home/TransactionHistory.js';
 import RegisterButton from '../../components/Home/RegisterButton.js';
 import Header from '../../components/Home/Header.js';
 import Footer from '../../components/Footer.js';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { History, Entity, Credit, DateSpan, Description, Amount } from './css/History';
+import { History, Credit, DateSpan, Description, Amount } from './css/History';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreditContainer(props) {
@@ -21,7 +21,6 @@ export default function CreditContainer(props) {
           <div key={credit.id} onClick={() => handleNavigation(credit.id)}>
             <Credit key={credit.id}>
               <DateSpan>{formattedDate}</DateSpan>
-              <Entity>{credit.debtor}</Entity>
               <Description>{credit.description}</Description>
               <Amount isNegative={credit.amount < 0}>
                 {credit.amount}
