@@ -20,7 +20,9 @@ export default function DebtContainer(props) {
         return (
           <div key={debt.id} onClick={() => handleNavigation(debt.id)}>
             <Credit key={debt.id}>
-              <DateSpan>{formattedDate}</DateSpan>
+              <div>
+                <DateSpan>{formattedDate}</DateSpan>
+              </div>
               <Description>{debt.description}</Description>
               <Amount isNegative={debt.amount < 0}>
                 {debt.amount}
