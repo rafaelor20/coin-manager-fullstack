@@ -24,7 +24,10 @@ export const Content = styled.div`
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: auto;
   height: 90%;
   width: 90%;
   p{

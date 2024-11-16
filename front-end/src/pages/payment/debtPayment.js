@@ -46,15 +46,20 @@ export default function DebtPayment() {
     }
   };
 
+  const formattedDate = debt.payDate 
+    ? `${new Date(debt.payDate).getMonth() + 1}/${new Date(debt.payDate).getDate()}` 
+    : 'No Date';
+
   return (
     <Page>
       <Container>
         <Header text="To Debts" to="/listDebts"/>
         <Main>
           <Content>
-            <p>{debt.creditor}</p>
-            <p>{debt.payDate}</p>
             <CurrentAmount>Current Amount: {debt.amount}</CurrentAmount>
+            <p>Creditor: {debt.creditor}</p>
+            <p>Description: {debt.description}</p>
+            <p>To be paid: {formattedDate}</p>
           </Content>
           <Main>
             <form onSubmit={handleSubmit}>
