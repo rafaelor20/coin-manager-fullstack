@@ -25,12 +25,16 @@ export const Content = styled.div`
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  height: 70%;
-  width: 80%;
+  height: 90%;
+  width: 90%;
+  p{
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 `;
 
 export const CurrentAmount = styled.div`
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 20px;
 `;

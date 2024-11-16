@@ -45,6 +45,10 @@ export default function CreditPayment() {
       toast('Error paying credit:', error.message);
     }
   };
+
+  const formattedDate = credit.payDate 
+    ? `${new Date(credit.payDate).getMonth() + 1}/${new Date(credit.payDate).getDate()}` 
+    : 'No Date';
   
   return (
     <Page>
@@ -52,9 +56,10 @@ export default function CreditPayment() {
         <Header text="To credits" to="/listCredits"/>
         <Main>
           <Content>
-            <p>{credit.debtor}</p>
-            <p>{credit.payDate}</p>
             <CurrentAmount>Current Amount: {credit.amount}</CurrentAmount>
+            <p>Debtor: {credit.debtor}</p>
+            <p>Description: {credit.description}</p>
+            <p>To be paid: {formattedDate}</p>
           </Content>
           <Main>
             <form onSubmit={handleSubmit}>
