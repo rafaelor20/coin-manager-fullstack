@@ -4,19 +4,11 @@ services:
     container_name: postgres
     restart: always
     ports:
-      - 5433:5432
+      - 5432:5432
     env_file:
       - back-end/.env.test
     volumes:
       - postgres-volume:/var/lib/postgresql/data
 
-  node:
-    container_name: node
-    build: ./back-end
-    restart: always
-    ports:
-      - 5000:5000
-    depends_on:
-      - postgres
-    env_file:
-      - back-end/.env.test
+volumes:
+  postgres-volume:

@@ -12,9 +12,14 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v2 # Set up Node.js
-          with:
-            node-version: 16.
+        with:
+          node-version: 16.
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      
       - name: Create .env file
         run: |
           echo "envkey_PORT=5000" >> .env
@@ -27,10 +32,12 @@ jobs:
           
       - name: Run Tests with Docker Compose
         run: |
-          cp .env back-end/.env  
-          docker-compose -f docker-compose-test.yml run postgres \
-          cd back-end \
-          npm install \
-          npm run build \
-          npm run migration:run \
-          npm run test
+         cp .env back-end/.env  
+          docker-compose -f docker-compose-test.yml up --build -d
+          docker-compose -f docker-compose-test.yml exec app sh -c "
+            cd back-end && \
+            npm install && \
+            npm run build && \
+            npm run migration:run && \
+            npm run test
+          "
