@@ -1,0 +1,36 @@
+name: Pull Request on Github
+
+on: [pull_request, push]
+
+jobs:
+  PullRequest-GitHub:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3 # Fetches the code of the repository
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2 # Set up Node.js
+          with:
+            node-version: 16.
+
+      - name: Create .env file
+        run: |
+          echo "envkey_PORT=5000" >> .env
+          echo "envkey_POSTGRES_HOST=postgres" >> .env
+          echo "envkey_POSTGRES_USER=postgres" >> .env
+          echo "envkey_POSTGRES_PASSWORD=root" >> .env
+          echo "envkey_POSTGRES_DB=coin_manager_test" >> .env
+          echo "envkey_POSTGRES_PORT=5432" >> .env
+          echo "envkey_DATABASE_URL=postgresql://postgres:root@postgres:5432/coin_manager_test?schema=public" >> .env
+          
+      - name: Run Tests with Docker Compose
+        run: |
+          cp .env back-end/.env  
+          docker-compose -f docker-compose-test.yml run postgres \
+          cd back-end \
+          npm install \
+          npm run build \
+          npm run migration:run \
+          npm run test
