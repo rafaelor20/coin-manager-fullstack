@@ -10,6 +10,11 @@ jobs:
       - name: Checkout Repository Code
         uses: actions/checkout@v3 # Fetches the code of the repository
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2 # Set up Node.js
+          with:
+            node-version: 16.
+
       - name: Create .env file
         run: |
           echo "envkey_PORT=5000" >> .env
@@ -20,10 +25,11 @@ jobs:
           echo "envkey_POSTGRES_PORT=5432" >> .env
           echo "envkey_DATABASE_URL=postgresql://postgres:root@postgres:5432/coin_manager_test?schema=public" >> .env
           
-
       - name: Run Tests with Docker Compose
         run: |
           docker-compose -f docker-compose-test.yml run postgres \
             cd back-end \
+            npm install \
+            npm run build \
             npm run migration:run \
             npm run test
