@@ -12,8 +12,8 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v2 # Set up Node.js
-          with:
-            node-version: 16.
+        with:
+          node-version: 16.
 
       - name: Create .env file
         run: |
