@@ -43,5 +43,7 @@ jobs:
           cd back-end && \
           npm install && \
           npm run build && \
-          npm run migration:run && \
+          npx prisma generate && \
+          npx prisma migrate dev && \
+          echo $DATABASE_URL && \
           npm run test
