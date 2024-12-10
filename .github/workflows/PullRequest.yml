@@ -43,5 +43,3 @@ jobs:
 
       - name: Clean up Docker
         run: docker-compose -f docker-compose-test.yml down
-
-
