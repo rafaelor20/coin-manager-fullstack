@@ -21,11 +21,6 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-
       - name: Create .env file
         run: |
           echo "DATABASE_URL=postgresql://postgres:root@postgres:5433/coin_manager_test?schema=public" >> back-end/.env
