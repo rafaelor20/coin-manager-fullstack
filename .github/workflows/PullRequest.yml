@@ -34,6 +34,12 @@ jobs:
         run: |
           docker-compose -f docker-compose-test.yml up -d --build
 
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          curl -sSL https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -o wait-for-it.sh
+          chmod +x wait-for-it.sh
+          bash ./wait-for-it.sh postgres:5432 --timeout=60 --strict -- echo "PostgreSQL is up"
+
       - name: Run Prisma Commands and Tests
         run: |
           npx prisma generate
@@ -43,5 +49,6 @@ jobs:
 
       - name: Clean up Docker
         run: docker-compose -f docker-compose-test.yml down
+
 
 
