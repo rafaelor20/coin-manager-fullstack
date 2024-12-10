@@ -38,7 +38,7 @@ jobs:
         run: |
           curl -sSL https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -o wait-for-it.sh
           chmod +x wait-for-it.sh
-          bash ./wait-for-it.sh postgres:5432 --timeout=60 --strict -- echo "PostgreSQL is up"
+          bash ./wait-for-it.sh postgres:5432 --timeout=120 --strict -- echo "PostgreSQL is up"
 
       - name: Run Prisma Commands and Tests
         run: |
