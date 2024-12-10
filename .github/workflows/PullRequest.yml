@@ -38,8 +38,8 @@ jobs:
 
       - name: Run Prisma Commands and Tests
         run: |
-          npm run migration:generate    
-          npm run migration:run      
+          prisma migrate dev   
+          prisma migrate deploy     
           npm run test
         working-directory: back-end
 
