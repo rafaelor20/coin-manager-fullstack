@@ -28,7 +28,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "DATABASE_URL=postgresql://postgres:root@postgres:5432/coin_manager_test?schema=public" >> backend/.env
+          echo "DATABASE_URL=postgresql://postgres:root@postgres:5432/coin_manager_test?schema=public" >> back-end/.env
 
       - name: Run Tests with Docker Compose
         run: |
@@ -41,7 +41,7 @@ jobs:
           npx prisma generate
           npx prisma migrate dev
           npm run test
-        working-directory: backend
+        working-directory: back-end
 
       - name: Clean up Docker
         run: docker-compose -f docker-compose-test.yml down
