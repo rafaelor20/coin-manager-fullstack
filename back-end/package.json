@@ -26,13 +26,6 @@
     "test:migration:generate": "npm run test:load-envs prisma migrate dev",
     "test:watch": "cross-env NODE_ENV=test jest --watch --passWithNoTests --runInBand",
     "test:seed": "npm run test:load-envs prisma db seed",
-    "test:local": "cross-env NODE_ENV=local jest --passWithNoTests --runInBand",
-    "test:local:load-envs": "dotenv -e .env.local",
-    "test:local:coverage": "cross-env NODE_ENV=local jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
-    "test:local:migration:run": "npm run test:local:load-envs prisma migrate deploy",
-    "test:local:migration:generate": "npm run test:local:load-envs prisma migrate dev",
-    "test:local:watch": "cross-env NODE_ENV=local jest --watch --passWithNoTests --runInBand",
-    "test:local:seed": "npm run test:load-envs prisma db seed"
   },
   "keywords": [
     "coin_manager",
