@@ -16,5 +16,8 @@ RUN npm i
 # compile TS to JS
 RUN npm run build
 
+RUN npm run prisma-generate
+RUN npm run prisma-run  
+
 # run prisma migrations and start the server
-CMD ["npm", "run", "migrate-and-start"]
+CMD ["npm", "run", "start"]
