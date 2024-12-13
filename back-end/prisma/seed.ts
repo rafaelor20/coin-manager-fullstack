@@ -12,14 +12,16 @@ async function main() {
   const hashedPassword1 = await bcrypt.hash('user1Password123', 12);
   const hashedPassword2 = await bcrypt.hash('user2Password456', 12);
 
+  
   const mainUser = await prisma.user.create({
     data: {
-      email: 'rafaelor20@teste.com',
+      email: 'testUser@teste.com',
       password: hashedMainPassword,
       amount: 10000,
       sessions: {
         create: [
-          { token: jwt.sign({ userId: 1 }, JWT_SECRET) }
+          { token: 'session_token_1' },
+          { token: 'session_token_2' }
         ]
       },
       transactions: {
@@ -51,7 +53,7 @@ async function main() {
           { entity: 'Company W', description: 'Salary', amount: 6500 }
         ]
       },
-      debts: {
+      Debts: {
         create: [
           { description: 'Car Loan', creditor: 'Bank X', amount: 5000, paid: false },
           { description: 'Credit Card', creditor: 'Bank Y', amount: 200, paid: true, payDate: new Date('2023-08-10') },
@@ -79,7 +81,7 @@ async function main() {
           { description: 'Loan', creditor: 'Bank X', amount: 1, paid: false }
         ]
       },
-      credits: {
+      Credits: {
         create: [
           { description: 'Loan Repayment', debtor: 'Friend A', amount: 150, paid: true, payDate: new Date('2023-07-20') },
           { description: 'Freelance Job', debtor: 'Client B', amount: 500, paid: false },
@@ -106,11 +108,12 @@ async function main() {
           { description: 'Freelance Job', debtor: 'Client', amount: 2000, paid: false },
           { description: 'Freelance Job', debtor: 'Client', amount: 2100, paid: false },
           { description: 'Freelance Job', debtor: 'Client', amount: 2200, paid: false },
-          { description: 'Freelance Job', debtor: 'Client', amount: 2300, paid: false, payDate: new Date('2023-07-20')  }
+          { description: 'Freelance Job', debtor: 'Client', amount: 2300, paid: false, payDate: new Date('2023-07-20')  },
         ]
       }
     }
   });
+
 
   const user1 = await prisma.user.create({
     data: {
