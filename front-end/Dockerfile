@@ -8,19 +8,7 @@ WORKDIR /tmp/react
 COPY . .
 
 # install project dependencies
-RUN npm i
-
-# bugfix - while using CRA to build
-RUN chmod a+x /tmp/react/node_modules/.bin/react-scripts 
-
-# create the optimized production version
-RUN npm run build
-
-# create the entire path (-p) for the folder to be served by nginx
-RUN mkdir -p /var/www/html
-
-# move the content
-RUN mv build/* /var/www/html
+RUN npm i && npm run build && mkdir -p /var/www/html && mv build/* /var/www/html
 
 # exit the folder
 WORKDIR /
