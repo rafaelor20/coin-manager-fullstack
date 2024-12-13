@@ -20,6 +20,7 @@ services:
       - postgres
     env_file:
       - back-end/.env
+    command: /bin/sh -c "npx prisma migrate deploy"
   
   react:
     container_name: react
