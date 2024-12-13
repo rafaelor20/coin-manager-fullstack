@@ -1,6 +1,12 @@
 name: Pull Request on Github
 
-on: [pull_request, push]
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
 jobs:
   PullRequest-GitHub:
@@ -8,29 +14,37 @@ jobs:
 
     steps:
       - name: Checkout Repository Code
-        uses: actions/checkout@v3 # Fetches the code of the repository
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2 # Set up Node.js
-          with:
-            node-version: 16.
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
       - name: Create .env file
         run: |
-          echo "envkey_PORT=5000" >> .env
-          echo "envkey_POSTGRES_HOST=postgres" >> .env
-          echo "envkey_POSTGRES_USER=postgres" >> .env
-          echo "envkey_POSTGRES_PASSWORD=root" >> .env
-          echo "envkey_POSTGRES_DB=coin_manager_test" >> .env
-          echo "envkey_POSTGRES_PORT=5432" >> .env
-          echo "envkey_DATABASE_URL=postgresql://postgres:root@postgres:5432/coin_manager_test?schema=public" >> .env
-          
+          echo "DATABASE_URL=postgresql://postgres:root@localhost:5433/coin_manager_test?schema=public" >> back-end/.env
+          echo "PORT=5000" >> back-end/.env
+          echo "JWT_SECRET=top_secret" >> back-end/.env 
+
       - name: Run Tests with Docker Compose
         run: |
-          cp .env back-end/.env  
-          docker-compose -f docker-compose-test.yml run postgres \
-          cd back-end \
-          npm install \
-          npm run build \
-          npm run migration:run \
+          docker-compose -f docker-compose-test.yml up -d --build
+
+      - name: Run Prisma Commands and Tests
+        run: |
+          npx prisma migrate dev   
+          npx prisma migrate deploy     
           npm run test
+        working-directory: back-end
+
+      - name: Clean up Docker
+        run: docker-compose -f docker-compose-test.yml down
+
+
+
