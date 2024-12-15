@@ -38,6 +38,7 @@ jobs:
 
       - name: Run Prisma Commands and Tests
         run: | 
+          npm install
           npx prisma migrate deploy     
           npm run test
         working-directory: back-end
