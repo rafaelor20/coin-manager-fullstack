@@ -37,8 +37,7 @@ jobs:
           docker-compose -f docker-compose-test.yml up -d --build
 
       - name: Run Prisma Commands and Tests
-        run: |
-          npx prisma migrate dev   
+        run: | 
           npx prisma migrate deploy     
           npm run test
         working-directory: back-end
