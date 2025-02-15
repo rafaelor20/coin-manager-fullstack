@@ -5,12 +5,16 @@ Back-end for coin manager, a personal finance app.
 ## About
 
 coin manager is personal finance management app that provides a simple
-way to streamline your finances, tracking your income and expenses
+way to streamline your finances, tracking your income, expenses and debts
 
-## user for test
-email: user1@example.com
-password: user2Password456
+## User for test
 
-## update project on docker
-docker-compose down --volumes
-docker-compose up --build
+email: testuser@teste.com
+
+password: qwerasdf
+
+## To run the project using docker compose, execute ti command below withing the terminal in the root folder of the project
+
+docker compose -f 'docker-compose.yml' up -d --build
+
+## After executing the command, access http://localhost:8080/ on your browser
