@@ -10,6 +10,7 @@
     "seed": "ts-node prisma/seed.ts",
     "migrate-and-start": "npx prisma migrate deploy && npm start",
     "migrate-seed-and-start": "npx prisma migrate deploy && npx prisma db seed && npm start",
+    "generate-migrate-seed-start": "npx prisma generate && npx prisma migrate deploy && npx prisma db seed && npm start",
     "lint": "eslint .",
     "lint:staged": "lint-staged",
     "migration:generate": "npx migrate dev",

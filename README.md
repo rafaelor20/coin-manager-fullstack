@@ -7,7 +7,7 @@ Back-end for coin manager, a personal finance app.
 coin manager is personal finance management app that provides a simple
 way to streamline your finances, tracking your income, expenses and debts
 
-## User for test
+## User for manual testing the app
 
 email: testuser@teste.com
 
