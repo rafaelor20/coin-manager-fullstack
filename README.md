@@ -1,6 +1,6 @@
 # coin-manager
 
-Back-end for coin manager, a personal finance app.
+Coin Manager is a personal finance app.
 
 ## About
 
