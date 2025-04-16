@@ -1,8 +1,7 @@
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { valid } from 'joi';
-import authenticationService, { invalidCredentialsError } from '@/services/authentication-service';
+import authenticationService from '@/services/authentication-service';
 import userRepository from '@/repositories/user-repository';
 import sessionRepository from '@/repositories/session-repository';
 
