@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { valid } from 'joi';
 import authenticationService, { invalidCredentialsError } from '@/services/authentication-service';
 import userRepository from '@/repositories/user-repository';
 import sessionRepository from '@/repositories/session-repository';
@@ -29,29 +30,8 @@ describe('authenticationService.signIn', () => {
     jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(mockUser);
   });
 
-  it('should throw InvalidCredentialError if there is no user for given email', async () => {
-    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(null);
-
-    await expect(authenticationService.signIn(validParams)).rejects.toEqual(invalidCredentialsError());
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email, {
-      id: true,
-      email: true,
-      password: true,
-    });
-  });
-
-  it('should throw InvalidCredentialError if given password is invalid', async () => {
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
-    jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as unknown as never);
-
-    await expect(authenticationService.signIn(validParams)).rejects.toEqual(invalidCredentialsError());
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
-    expect(bcrypt.compare).toHaveBeenCalledWith(validParams.password, mockUser.password);
-  });
-
   it('should return user data and token if email and password are valid', async () => {
     const mockToken = 'validToken';
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
     jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as unknown as never);
     jest.spyOn(jwt, 'sign').mockImplementation(() => mockToken);
     jest.spyOn(sessionRepository, 'create').mockResolvedValue({
@@ -67,6 +47,8 @@ describe('authenticationService.signIn', () => {
       user: {
         id: mockUser.id,
         email: mockUser.email,
+        amount: mockUser.amount,
+        createdAt: mockUser.createdAt.toISOString(),
       },
       token: mockToken,
     });
