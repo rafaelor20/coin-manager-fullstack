@@ -1,77 +1,82 @@
-import faker from '@faker-js/faker';
-import { createUser } from '../factories';
-import { cleanDb } from '../helpers';
-import { init } from '@/app';
-import { prisma } from '@/config';
+import { faker } from '@faker-js/faker';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import authenticationService, { invalidCredentialsError } from '@/services/authentication-service';
+import userRepository from '@/repositories/user-repository';
+import sessionRepository from '@/repositories/session-repository';
 
-beforeAll(async () => {
-  await init();
-  await cleanDb();
-});
+jest.mock('@/repositories/user-repository');
+jest.mock('@/repositories/session-repository');
+jest.mock('bcrypt');
+jest.mock('jsonwebtoken');
 
-describe('signIn', () => {
-  const generateParams = () => ({
+describe('authenticationService.signIn', () => {
+  const mockUser = {
+    id: 1,
     email: faker.internet.email(),
-    password: faker.internet.password(6),
+    password: 'hashedPassword',
+    createdAt: new Date(),
+    amount: 100,
+  };
+
+  const validParams = {
+    email: mockUser.email,
+    password: 'plainPassword',
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(mockUser);
   });
 
   it('should throw InvalidCredentialError if there is no user for given email', async () => {
-    const params = generateParams();
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(null);
 
-    try {
-      await authenticationService.signIn(params);
-      fail('should throw InvalidCredentialError');
-    } catch (error) {
-      expect(error).toEqual(invalidCredentialsError());
-    }
+    await expect(authenticationService.signIn(validParams)).rejects.toEqual(invalidCredentialsError());
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email, {
+      id: true,
+      email: true,
+      password: true,
+    });
   });
 
   it('should throw InvalidCredentialError if given password is invalid', async () => {
-    const params = generateParams();
-    await createUser({
-      email: params.email,
-      password: 'invalid-password',
-    });
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
+    jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as unknown as never);
 
-    try {
-      await authenticationService.signIn(params);
-      fail('should throw InvalidCredentialError');
-    } catch (error) {
-      expect(error).toEqual(invalidCredentialsError());
-    }
+    await expect(authenticationService.signIn(validParams)).rejects.toEqual(invalidCredentialsError());
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
+    expect(bcrypt.compare).toHaveBeenCalledWith(validParams.password, mockUser.password);
   });
 
-  describe('when email and password are valid', () => {
-    it('should return user data if given email and password are valid', async () => {
-      const params = generateParams();
-      const user = await createUser(params);
-
-      const { user: signInUser } = await authenticationService.signIn(params);
-      expect(user).toEqual(
-        expect.objectContaining({
-          id: signInUser.id,
-          email: signInUser.email,
-          amount: expect.any(Number),
-          createdAt: expect.any(Date),
-        }),
-      );
+  it('should return user data and token if email and password are valid', async () => {
+    const mockToken = 'validToken';
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email);
+    jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as unknown as never);
+    jest.spyOn(jwt, 'sign').mockImplementation(() => mockToken);
+    jest.spyOn(sessionRepository, 'create').mockResolvedValue({
+      id: 1,
+      userId: mockUser.id,
+      token: mockToken,
+      createdAt: new Date(),
     });
 
-    it('should create new session and return given token', async () => {
-      const params = generateParams();
-      const user = await createUser(params);
+    const result = await authenticationService.signIn(validParams);
 
-      const { token: createdSessionToken } = await authenticationService.signIn(params);
-
-      expect(createdSessionToken).toBeDefined();
-      const session = await prisma.session.findFirst({
-        where: {
-          token: createdSessionToken,
-          userId: user.id,
-        },
-      });
-      expect(session).toBeDefined();
+    expect(result).toEqual({
+      user: {
+        id: mockUser.id,
+        email: mockUser.email,
+      },
+      token: mockToken,
     });
+    expect(userRepository.findByEmail).toHaveBeenCalledWith(validParams.email, {
+      id: true,
+      email: true,
+      password: true,
+    });
+    expect(bcrypt.compare).toHaveBeenCalledWith(validParams.password, mockUser.password);
+    expect(jwt.sign).toHaveBeenCalledWith({ userId: mockUser.id }, process.env.JWT_SECRET);
+    expect(sessionRepository.create).toHaveBeenCalledWith({ token: mockToken, userId: mockUser.id });
   });
 });
