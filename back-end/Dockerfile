@@ -1,5 +1,5 @@
 # fetch base image of Node
-FROM node:16-alpine
+FROM node:19-alpine
 
 # use this folder as the working directory (like a CD command)
 WORKDIR /usr/src

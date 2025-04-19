@@ -1,14 +1,36 @@
+version: '3.9'
 services:
-  postgres:
-    image: postgres
-    container_name: postgres
+  postgres-test:
+    image: postgres:17-alpine
+    container_name: coin_manager_test_db
     restart: always
     ports:
-      - 5433:5432
-    env_file:
-      - back-end/.env.test
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: coin_manager_test
     volumes:
-      - postgres-volume:/var/lib/postgresql/data
+      - pgdata-test:/var/lib/postgresql/data
+    networks:
+      - test-net
+
+  node-test:
+    build: ./back-end
+    container_name: node-test
+    depends_on:
+      - postgres-test
+    env_file:
+      - ./back-end/.env.test
+    command: >
+      sh -c "npx prisma generate &&
+             npx prisma migrate deploy &&
+             npm run test"
+    networks:
+      - test-net
 
 volumes:
-  postgres-volume:
+  pgdata-test:
+
+networks:
+  test-net:
