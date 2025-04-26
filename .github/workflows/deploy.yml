@@ -8,6 +8,7 @@ name: Build and Deploy on AWS
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: EC2 
     timeout-minutes: 10
 
     steps:
