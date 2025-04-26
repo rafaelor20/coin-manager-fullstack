@@ -16,12 +16,12 @@ jobs:
 
       - name: Create back-end env file
         run: |
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> back-end/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> back-end/.env
 
       - name: Create front-end env file
         run: |
-          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> frontend/.env
+          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> front-end/.env
 
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
