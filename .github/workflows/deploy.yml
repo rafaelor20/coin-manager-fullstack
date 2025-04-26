@@ -5,7 +5,7 @@ on:
 name: Build and Deploy on AWS
 jobs:
     build:
-      runs-on: self-hosted
+      runs-on: ubuntu-latest
       timeout-minutes: 10
       steps:
         - name: Checkout
@@ -25,7 +25,15 @@ jobs:
             file_name: .env
             file_location: frontend/
             fail_on_empty: true
-        - name: Build
-          run: docker compose build
-        - name: Run
-          run: docker compose down && docker compose up -d
+        - name: Deploy to EC2 via SSH
+          uses: appleboy/ssh-action@v1.0.3
+          with:
+            host: ${{ secrets.EC2_HOST }}
+            username: ${{ secrets.EC2_USER }}
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+                cd /path/to/your/project
+                git pull origin main
+                docker compose down
+                docker compose up --build -d
+            
