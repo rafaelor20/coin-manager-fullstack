@@ -31,8 +31,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            ls
-            git pull origin main
+            git clone https://github.com/rafaelor20/coin-manager-fullstack.git
+            cd coin-manager-fullstack
             docker compose down
             docker compose -f 'docker-compose.yml' up -d --build 
 
