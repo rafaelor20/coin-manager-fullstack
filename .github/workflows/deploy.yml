@@ -33,7 +33,7 @@ jobs:
           script: |
             git clone https://github.com/rafaelor20/coin-manager-fullstack.git
             cd coin-manager-fullstack
-            docker compose down
-            docker compose -f 'docker-compose.yml' up -d --build 
+            docker-compose down
+            docker-compose -f 'docker-compose.yml' up -d --build 
 
             
