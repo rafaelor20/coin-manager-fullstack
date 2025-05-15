@@ -22,11 +22,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            rm -rf coin-manager-fullstack
             git clone https://github.com/rafaelor20/coin-manager-fullstack.git
             cd coin-manager-fullstack
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> back-end/.env
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> back-end/.env
             echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> front-end/.env
+            sudo usermod -aG docker $USER
             docker-compose down
             docker-compose -f 'docker-compose.yml' up -d --build 
 
