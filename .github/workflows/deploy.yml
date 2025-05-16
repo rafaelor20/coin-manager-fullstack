@@ -28,5 +28,5 @@ jobs:
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> back-end/.env
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> back-end/.env
             echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> front-end/.env
-            docker-compose down
-            docker-compose -f 'docker-compose.yml' up -d --build
+            sudo docker-compose down
+            sudo docker-compose -f 'docker-compose.yml' up -d --build
