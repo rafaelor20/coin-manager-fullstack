@@ -30,5 +30,3 @@ jobs:
             echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> front-end/.env
             docker-compose down
             docker-compose -f 'docker-compose.yml' up -d --build
-
-            
