@@ -40,8 +40,8 @@ jobs:
       - name: Deploy to Azure VM via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 20.120.242.63
-          username: superuser
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
           port: 22
           script: |
@@ -60,7 +60,7 @@ jobs:
 
             echo "Atualizando código fonte..."
             sudo rm -rf /opt/coin-manager
-            sudo git clone https://${{ secrets.GH_DEPLOY_TOKEN }}@github.com/elizeurjr/coin-manager-fullstack.git /opt/coin-manager
+            sudo git clone https://${{ secrets.GH_DEPLOY_TOKEN }}@github.com/rafaelor20/coin-manager-fullstack.git /opt/coin-manager
             cd /opt/coin-manager
 
             echo "Atualizando imagens..."
