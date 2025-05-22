@@ -43,7 +43,3 @@ services:
 volumes:
   postgres-volume:
   react-volume:
-
-networks:
-  default:
-    driver: bridge
