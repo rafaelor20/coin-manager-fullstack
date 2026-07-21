@@ -27,7 +27,7 @@ minikube addons enable ingress
 Apply all the Kubernetes manifests located in this directory:
 
 ```bash
-kubectl apply -f .
+kubectl apply -R -f .
 ```
 
 This command will create the deployments, services, secrets, and persistent volume claims required for the application to run.
