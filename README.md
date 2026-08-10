@@ -17,10 +17,19 @@ email: user@test.com
 password: qwerasdf
 ```
 
-## To run the project using docker compose, execute the command below withing the terminal in the root folder of the project
+## Starting the project for the first time or resetting database
+
+To initialize or reset the database with migrations and automatic seed, and start the application containers:
 
 ```bash
-docker compose -f 'docker-compose.yml' up -d --build
+./reset-containers.sh
+```
+
+## Running the project with docker compose
+
+```bash
+docker compose up -d --build
 ```
 
 ## After executing the command, access http://localhost:8080/ on your browser
+

@@ -13,7 +13,7 @@
     "migration:generate": "npx prisma migrate dev",
     "migration:run": "npx prisma migrate deploy",
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
-    "dev:seed": "npm run dev:load-envs prisma db seed",
+    "dev:seed": "ts-node prisma/seed.ts",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
     "test:coverage": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
     "test:watch": "cross-env NODE_ENV=test jest --watch --passWithNoTests --runInBand"
@@ -29,7 +29,7 @@
   "author": "Rafael Oliveira Rosario",
   "license": "ISC",
   "prisma": {
-    "seed": "npm run dev:load-envs -- ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",

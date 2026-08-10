@@ -1,17 +1,19 @@
-# fetch base image of Node
-FROM node:19-alpine
+FROM node:20-alpine
 
-# use this folder as the working directory (like a CD command)
+# Install OpenSSL, libc6-compat and build tools for native packages
+RUN apk add --no-cache openssl libc6-compat python3 make g++
+
 WORKDIR /usr/src
 
-# copy the current directory to the workdir
+COPY package*.json ./
+COPY prisma ./prisma/
+
+RUN npm install
+
 COPY . .
 
-# "expose" port 5000
+RUN npx prisma generate && npm run build
+
 EXPOSE 5000
 
-# download dependencies
-RUN npm i && npm run build
-
-# start the server
 CMD ["npm", "run", "start"]
