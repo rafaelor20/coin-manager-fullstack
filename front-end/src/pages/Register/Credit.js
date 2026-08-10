@@ -1,77 +1,148 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import {
+  FiUsers,
+  FiDollarSign,
+  FiUser,
+  FiFileText,
+  FiCalendar,
+  FiCheckCircle
+} from 'react-icons/fi';
 
 import Page from '../../components/Page';
-import { Container } from '../../components/Register/styles';
 import Header from '../../components/Header';
 import Button from '../../components/Form/Button';
 import Input from '../../components/Form/Input';
+import {
+  Container,
+  FormCard,
+  FormHeader,
+  FormIconBadge,
+  FormHeaderText,
+  FormTitle,
+  FormSubtitle,
+  StyledForm
+} from '../../components/Register/styles';
 import saveCredit from '../../hooks/api/saveCredit';
 
-export default function MoneyIn() {
+export default function Credit() {
   const [amount, setAmount] = useState('');
   const [debtor, setDebtor] = useState('');
   const [payDate, setPayDate] = useState('');
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const { saveCredit: saveCreditFunction } = saveCredit();
+  const navigate = useNavigate();
 
   const handleSubmit = async(event) => {
     event.preventDefault();
 
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      toast.warning('Informe um valor válido maior que zero.');
+      return;
+    }
+
+    if (!debtor.trim()) {
+      toast.warning('Informe o nome da pessoa ou entidade que tomou o empréstimo.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      // Convert the paymentDate to ISO format before sending it to the backend
       const isoFormattedDate = payDate ? new Date(payDate).toISOString() : null;
 
-      // Call saveCredit function with the required data
-      await saveCreditFunction({ amount, debtor, description, payDate: isoFormattedDate });
+      await saveCreditFunction({
+        amount: parsedAmount,
+        debtor: debtor.trim(),
+        description: description.trim() || undefined,
+        payDate: isoFormattedDate
+      });
 
-      // Optionally, you can reset the form fields after successful submission
-      setAmount('');
-      setDebtor('');
-      setPayDate('');
-      setDescription('');
-
-      // Add any additional logic after a successful credit registration
-      toast('Credit registered successfully!');
+      toast.success('Empréstimo registrado com sucesso!');
+      navigate('/listCredits');
     } catch (error) {
-      // Handle errors, e.g., display an error message to the user
-      toast('Error registering credit:', error.message);
+      toast.error('Erro ao registrar empréstimo: ' + (error.message || ''));
+      setLoading(false);
     }
   };
 
   return (
     <Page>
       <Container>
-        <Header text="Credit" to="/home"/>
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Value"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <Input
-            label="Debtor"
-            type="text"
-            value={debtor}
-            onChange={(e) => setDebtor(e.target.value)}
-          />
-          <Input
-            label="description"
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Input
-            label="Payment Date"
-            type="date"
-            value={payDate}
-            onChange={(e) => setPayDate(e.target.value)}
-          />
-          <Button type="submit" color="primary" fullWidth>
-            Register
-          </Button>
-        </form>
+        <Header
+          text="Conceder Empréstimo"
+          subtitle="Cadastre valores emprestados a receber de terceiros"
+          to="/listCredits"
+        />
+
+        <FormCard>
+          <FormHeader>
+            <FormIconBadge
+              bg="rgba(14, 165, 233, 0.15)"
+              color="#38BDF8"
+              border="rgba(14, 165, 233, 0.3)"
+            >
+              <FiUsers />
+            </FormIconBadge>
+            <FormHeaderText>
+              <FormTitle>Novo Empréstimo Concedido</FormTitle>
+              <FormSubtitle>
+                Preencha os dados do devedor e a data prevista de acerto
+              </FormSubtitle>
+            </FormHeaderText>
+          </FormHeader>
+
+          <StyledForm onSubmit={handleSubmit}>
+            <Input
+              label="Valor Emprestado (R$)"
+              type="number"
+              step="0.01"
+              min="0.01"
+              placeholder="0,00"
+              icon={<FiDollarSign />}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+            <Input
+              label="Nome do Devedor"
+              type="text"
+              placeholder="Ex: João Silva, Maria Santos, Empresa X"
+              icon={<FiUser />}
+              value={debtor}
+              onChange={(e) => setDebtor(e.target.value)}
+              required
+            />
+            <Input
+              label="Descrição / Motivo (Opcional)"
+              type="text"
+              placeholder="Ex: Empréstimo para compra de equipamento"
+              icon={<FiFileText />}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <Input
+              label="Data Prevista para Pagamento (Opcional)"
+              type="date"
+              icon={<FiCalendar />}
+              value={payDate}
+              onChange={(e) => setPayDate(e.target.value)}
+            />
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              loading={loading}
+              icon={<FiCheckCircle />}
+              style={{ marginTop: '0.5rem' }}
+            >
+              Registrar Empréstimo
+            </Button>
+          </StyledForm>
+        </FormCard>
       </Container>
     </Page>
   );
