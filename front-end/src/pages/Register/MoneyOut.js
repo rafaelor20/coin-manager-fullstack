@@ -122,7 +122,6 @@ export default function MoneyOut() {
               fullWidth
               loading={loading}
               icon={<FiCheckCircle />}
-              style={{ marginTop: '0.5rem' }}
             >
               Confirmar Pagamento
             </Button>

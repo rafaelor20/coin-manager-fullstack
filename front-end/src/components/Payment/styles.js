@@ -174,12 +174,18 @@ export const FormCard = styled.div`
   }
 `;
 
+export const PaymentForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+`;
+
 export const QuickFillRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: -0.5rem;
-  margin-bottom: 0.75rem;
+  margin-top: -0.35rem;
 `;
 
 export const QuickFillButton = styled.button`

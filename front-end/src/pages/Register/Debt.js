@@ -137,7 +137,6 @@ export default function Debt() {
               fullWidth
               loading={loading}
               icon={<FiCheckCircle />}
-              style={{ marginTop: '0.5rem' }}
             >
               Registrar Dívida
             </Button>

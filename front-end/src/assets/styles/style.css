@@ -2,11 +2,12 @@
 
 :root {
   --bg-dark: #090D16;
+  --bg-input: #111827;
   --bg-card: rgba(18, 24, 38, 0.75);
   --bg-card-hover: rgba(28, 36, 56, 0.85);
   --bg-card-solid: #121826;
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(99, 102, 241, 0.35);
+  --border-focus: rgba(99, 102, 241, 0.5);
   
   --primary: #6366F1;
   --primary-light: #818CF8;
@@ -76,8 +77,29 @@ a {
   text-decoration: none;
 }
 
+/* Global Form Controls & Autofill Protection */
 button, input, select, textarea {
   font-family: inherit;
+  box-sizing: border-box;
+}
+
+input {
+  background-color: transparent;
+  color: var(--text-main);
+  border: none;
+  outline: none;
+}
+
+/* Fix browser autofill turning inputs white/yellow */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #111827 inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #f8fafc !important;
+  border-radius: inherit;
 }
 
 /* Custom Sleek Scrollbar */
@@ -119,15 +141,6 @@ button, input, select, textarea {
   50% {
     opacity: 0.7;
     transform: scale(1.05);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
   }
 }
 

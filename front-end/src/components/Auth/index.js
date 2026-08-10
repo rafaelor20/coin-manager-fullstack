@@ -18,7 +18,7 @@ export const AuthCard = styled.div`
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 2.5rem 2rem;
+  padding: 2.25rem 2rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.12);
   display: flex;
   flex-direction: column;
@@ -75,6 +75,7 @@ export const Subtitle = styled.p`
 export const FormSection = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 1.15rem;
   width: 100%;
 `;
 
@@ -83,7 +84,7 @@ export const LinksSection = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  padding-top: 0.5rem;
+  padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 `;
 

@@ -119,7 +119,6 @@ export default function MoneyIn() {
               fullWidth
               loading={loading}
               icon={<FiCheckCircle />}
-              style={{ marginTop: '0.5rem' }}
             >
               Confirmar Recebimento
             </Button>

@@ -33,7 +33,7 @@ export const FormHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 `;
 
 export const FormIconBadge = styled.div`
@@ -47,6 +47,7 @@ export const FormIconBadge = styled.div`
   background: ${(props) => props.bg || 'rgba(99, 102, 241, 0.15)'};
   color: ${(props) => props.color || '#818cf8'};
   border: 1px solid ${(props) => props.border || 'rgba(99, 102, 241, 0.3)'};
+  flex-shrink: 0;
 `;
 
 export const FormHeaderText = styled.div`
@@ -68,5 +69,6 @@ export const FormSubtitle = styled.p`
 export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 1.15rem;
   width: 100%;
 `;

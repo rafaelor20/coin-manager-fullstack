@@ -10,6 +10,8 @@ export default function Button({
   icon,
   type = 'button',
   onClick,
+  style,
+  className,
   ...props
 }) {
   return (
@@ -19,6 +21,8 @@ export default function Button({
       fullWidth={fullWidth}
       disabled={disabled || loading}
       onClick={onClick}
+      style={style}
+      className={className}
       {...props}
     >
       {loading ? (
@@ -130,13 +134,17 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   width: ${(props) => (props.fullWidth ? '100%' : 'auto')};
-  padding: 0.85rem 1.4rem;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 1.4rem;
   border-radius: 12px;
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   border: none;
+  box-sizing: border-box;
+  margin: 0;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;

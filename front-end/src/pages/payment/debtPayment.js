@@ -27,6 +27,7 @@ import {
   DetailLabel,
   DetailValue,
   FormCard,
+  PaymentForm,
   QuickFillRow,
   QuickFillButton
 } from '../../components/Payment/styles';
@@ -164,7 +165,7 @@ export default function DebtPayment() {
               </TitleGroup>
             </HeaderSection>
 
-            <form onSubmit={handleSubmit}>
+            <PaymentForm onSubmit={handleSubmit}>
               <Input
                 label="Valor a Pagar (R$)"
                 type="number"
@@ -195,7 +196,7 @@ export default function DebtPayment() {
               >
                 Confirmar Pagamento
               </Button>
-            </form>
+            </PaymentForm>
           </FormCard>
         </Main>
       </Container>
