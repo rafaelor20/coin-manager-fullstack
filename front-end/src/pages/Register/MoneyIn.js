@@ -47,14 +47,20 @@ export default function MoneyIn() {
     try {
       await saveTransactionFunction({
         amount: parsedAmount,
-        entity: entity.trim() || undefined,
+        entity: entity.trim() || 'Recebimento',
         description: description.trim() || 'Recebimento'
       });
 
       toast.success('Recebimento registrado com sucesso!');
       navigate('/home');
     } catch (error) {
-      toast.error('Erro ao registrar recebimento: ' + (error.message || ''));
+      const msg =
+        error.response?.data?.details?.join?.(', ') ||
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        'Erro ao registrar recebimento.';
+      toast.error('Erro ao registrar recebimento: ' + msg);
       setLoading(false);
     }
   };

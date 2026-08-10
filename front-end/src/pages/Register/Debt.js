@@ -36,6 +36,18 @@ export default function Debt() {
   const { saveDebt: saveDebtFunction } = saveDebt();
   const navigate = useNavigate();
 
+  // Get tomorrow's date string for input min attribute
+  const getTomorrowDateString = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const year = tomorrow.getFullYear();
+    const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+    const day = String(tomorrow.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const minDate = getTomorrowDateString();
+
   const handleSubmit = async(event) => {
     event.preventDefault();
 
@@ -52,19 +64,32 @@ export default function Debt() {
 
     setLoading(true);
     try {
-      const isoFormattedDate = payDate ? new Date(payDate).toISOString() : null;
-
-      await saveDebtFunction({
+      const payload = {
         amount: parsedAmount,
-        creditor: creditor.trim(),
-        description: description.trim() || undefined,
-        payDate: isoFormattedDate
-      });
+        creditor: creditor.trim()
+      };
+
+      if (description.trim()) {
+        payload.description = description.trim();
+      }
+
+      if (payDate) {
+        const selectedDate = new Date(payDate + 'T12:00:00');
+        payload.payDate = selectedDate.toISOString();
+      }
+
+      await saveDebtFunction(payload);
 
       toast.success('Dívida registrada com sucesso!');
       navigate('/listDebts');
     } catch (error) {
-      toast.error('Erro ao registrar dívida: ' + (error.message || ''));
+      const msg =
+        error.response?.data?.details?.join?.(', ') ||
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        'Erro ao registrar dívida.';
+      toast.error('Erro ao registrar dívida: ' + msg);
       setLoading(false);
     }
   };
@@ -127,6 +152,8 @@ export default function Debt() {
             <Input
               label="Data de Vencimento / Pagamento (Opcional)"
               type="date"
+              min={minDate}
+              helperText="A data de vencimento deve ser a partir de amanhã"
               icon={<FiCalendar />}
               value={payDate}
               onChange={(e) => setPayDate(e.target.value)}

@@ -45,19 +45,24 @@ export default function MoneyOut() {
 
     setLoading(true);
     try {
-      // Amount is saved as negative for outflow
       const negativeAmount = -1 * Math.abs(parsedAmount);
 
       await saveTransactionFunction({
         amount: negativeAmount,
-        entity: entity.trim() || undefined,
+        entity: entity.trim() || 'Despesa',
         description: description.trim() || 'Pagamento'
       });
 
       toast.success('Pagamento registrado com sucesso!');
       navigate('/home');
     } catch (error) {
-      toast.error('Erro ao registrar pagamento: ' + (error.message || ''));
+      const msg =
+        error.response?.data?.details?.join?.(', ') ||
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        'Erro ao registrar pagamento.';
+      toast.error('Erro ao registrar pagamento: ' + msg);
       setLoading(false);
     }
   };

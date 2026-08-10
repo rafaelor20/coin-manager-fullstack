@@ -36,6 +36,18 @@ export default function Credit() {
   const { saveCredit: saveCreditFunction } = saveCredit();
   const navigate = useNavigate();
 
+  // Get tomorrow's date string for input min attribute
+  const getTomorrowDateString = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const year = tomorrow.getFullYear();
+    const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+    const day = String(tomorrow.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const minDate = getTomorrowDateString();
+
   const handleSubmit = async(event) => {
     event.preventDefault();
 
@@ -52,19 +64,32 @@ export default function Credit() {
 
     setLoading(true);
     try {
-      const isoFormattedDate = payDate ? new Date(payDate).toISOString() : null;
-
-      await saveCreditFunction({
+      const payload = {
         amount: parsedAmount,
-        debtor: debtor.trim(),
-        description: description.trim() || undefined,
-        payDate: isoFormattedDate
-      });
+        debtor: debtor.trim()
+      };
+
+      if (description.trim()) {
+        payload.description = description.trim();
+      }
+
+      if (payDate) {
+        const selectedDate = new Date(payDate + 'T12:00:00');
+        payload.payDate = selectedDate.toISOString();
+      }
+
+      await saveCreditFunction(payload);
 
       toast.success('Empréstimo registrado com sucesso!');
       navigate('/listCredits');
     } catch (error) {
-      toast.error('Erro ao registrar empréstimo: ' + (error.message || ''));
+      const msg =
+        error.response?.data?.details?.join?.(', ') ||
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        'Erro ao registrar empréstimo.';
+      toast.error('Erro ao registrar empréstimo: ' + msg);
       setLoading(false);
     }
   };
@@ -127,6 +152,8 @@ export default function Credit() {
             <Input
               label="Data Prevista para Pagamento (Opcional)"
               type="date"
+              min={minDate}
+              helperText="A data de vencimento deve ser a partir de amanhã"
               icon={<FiCalendar />}
               value={payDate}
               onChange={(e) => setPayDate(e.target.value)}
