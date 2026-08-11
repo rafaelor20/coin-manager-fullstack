@@ -31,5 +31,13 @@ To initialize or reset the database with migrations and automatic seed, and star
 docker compose up -d --build
 ```
 
+## Running automated tests
+
+To run the automated tests in isolated test containers:
+
+```bash
+./run-tests.sh
+```
+
 ## After executing the command, access http://localhost:8080/ on your browser
 
