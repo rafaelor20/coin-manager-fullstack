@@ -16,7 +16,7 @@ import {
   Title,
   Subtitle,
   FormSection,
-  LinksSection
+  LinksSection,
 } from '../../components/Auth';
 import UserContext from '../../contexts/UserContext';
 import useSignIn from '../../hooks/api/useSignIn';
@@ -58,9 +58,7 @@ export default function SignIn() {
             <Title>
               Coin<span>Manager</span>
             </Title>
-            <Subtitle>
-              Controle suas finanças, recebimentos, empréstimos e dívidas em um só lugar.
-            </Subtitle>
+            <Subtitle>Registre suas finanças por aqui.</Subtitle>
           </HeaderSection>
 
           <FormSection onSubmit={submit}>
@@ -82,13 +80,7 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Button
-              type="submit"
-              variant="primary"
-              fullWidth
-              loading={loadingSignIn}
-              icon={<FiLogIn />}
-            >
+            <Button type="submit" variant="primary" fullWidth loading={loadingSignIn} icon={<FiLogIn />}>
               Entrar na Conta
             </Button>
           </FormSection>

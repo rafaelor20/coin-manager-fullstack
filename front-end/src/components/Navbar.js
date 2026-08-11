@@ -1,16 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  FiHome,
-  FiArrowDownLeft,
-  FiArrowUpRight,
-  FiUsers,
-  FiCreditCard,
-  FiLogOut,
-  FiMenu,
-  FiX
-} from 'react-icons/fi';
+import { FiHome, FiArrowDownLeft, FiArrowUpRight, FiUsers, FiCreditCard, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { FaCoins } from 'react-icons/fa';
 import UserContext from '../contexts/UserContext';
 
@@ -33,11 +24,9 @@ export default function Navbar() {
     { label: 'Dívidas', path: '/listDebts', icon: <FiCreditCard /> },
   ];
 
-  const userInitial = userData?.user?.email
-    ? userData.user.email.charAt(0).toUpperCase()
-    : 'U';
-
-  const userEmail = userData?.user?.email || 'Usuário';
+  const email = userData?.email || userData?.user?.email || '';
+  const userInitial = email ? email.charAt(0).toUpperCase() : 'U';
+  const userEmail = email || 'Usuário';
 
   return (
     <>
@@ -55,11 +44,7 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <NavMenu>
             {navItems.map((item) => (
-              <StyledNavLink
-                key={item.path}
-                to={item.path}
-                className={location.pathname === item.path ? 'active' : ''}
-              >
+              <StyledNavLink key={item.path} to={item.path} className={location.pathname === item.path ? 'active' : ''}>
                 {item.icon}
                 <span>{item.label}</span>
               </StyledNavLink>
@@ -138,11 +123,7 @@ export default function Navbar() {
       {/* Mobile Sticky Bottom Nav Bar for fast smartphone navigation */}
       <BottomNav>
         {navItems.map((item) => (
-          <BottomNavItem
-            key={item.path}
-            to={item.path}
-            className={location.pathname === item.path ? 'active' : ''}
-          >
+          <BottomNavItem key={item.path} to={item.path} className={location.pathname === item.path ? 'active' : ''}>
             <BottomNavIcon>{item.icon}</BottomNavIcon>
             <BottomNavText>{item.label}</BottomNavText>
           </BottomNavItem>

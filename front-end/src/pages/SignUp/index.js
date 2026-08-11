@@ -15,7 +15,7 @@ import {
   Title,
   Subtitle,
   FormSection,
-  LinksSection
+  LinksSection,
 } from '../../components/Auth';
 import Link from '../../components/Link';
 import useSignUp from '../../hooks/api/useSignUp';
@@ -66,9 +66,7 @@ export default function SignUp() {
             <Title>
               Criar <span>Conta</span>
             </Title>
-            <Subtitle>
-              Comece a gerenciar suas finanças e empréstimos de forma simples e segura.
-            </Subtitle>
+            <Subtitle>Comece a gerenciar suas finanças e empréstimos de forma simples e segura.</Subtitle>
           </HeaderSection>
 
           <FormSection onSubmit={submit}>
@@ -99,13 +97,7 @@ export default function SignUp() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            <Button
-              type="submit"
-              variant="primary"
-              fullWidth
-              loading={loadingSignUp}
-              icon={<FiUserPlus />}
-            >
+            <Button type="submit" variant="primary" fullWidth loading={loadingSignUp} icon={<FiUserPlus />}>
               Cadastrar Conta
             </Button>
           </FormSection>
