@@ -15,23 +15,21 @@ export function loadEnv() {
     specificFile = '.env.local';
   }
 
-  // 1. Prioridade para arquivos .env comuns (se existir no diretório atual ou raiz)
-  const commonPath = path.resolve(process.cwd(), '.env');
-  if (fs.existsSync(commonPath)) {
-    const commonEnvs = dotenv.config({ path: commonPath });
-    dotenvExpand.expand(commonEnvs);
-  }
-
-  // 2. Carrega o arquivo específico do ambiente (.env.local, .env.compose, .env.test)
-  // O dotenv não sobrescreve variáveis já definidas pelo .env comum, garantindo a prioridade do comum
+  // 1. Carrega o arquivo de ambiente específico como base (.env.local, .env.compose, .env.test)
   const specificPath = path.resolve(process.cwd(), specificFile);
   if (fs.existsSync(specificPath)) {
     const specificEnvs = dotenv.config({ path: specificPath });
     dotenvExpand.expand(specificEnvs);
   } else {
-    // Fallback relativo
     const fallbackEnvs = dotenv.config({ path: specificFile });
     dotenvExpand.expand(fallbackEnvs);
+  }
+
+  // 2. Prioridade máxima: Arquivo .env comum (sobrescreve variáveis do específico se estiverem presentes)
+  const commonPath = path.resolve(process.cwd(), '.env');
+  if (fs.existsSync(commonPath)) {
+    const commonEnvs = dotenv.config({ path: commonPath, override: true });
+    dotenvExpand.expand(commonEnvs);
   }
 
   // Expande variáveis interpoladas no process.env (ex: DATABASE_URL com ${POSTGRES_USER})
