@@ -17,7 +17,9 @@ services:
       retries: 10
 
   db-reset:
-    build: ./back-end
+    build:
+      context: ./back-end
+      target: builder
     container_name: coin_manager_db_reset
     depends_on:
       postgres:
