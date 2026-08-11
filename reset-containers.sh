@@ -2,7 +2,7 @@
 set -e
 
 echo "=== Parando containers atuais ==="
-docker compose down
+docker compose down -v --rmi all --remove-orphans
 
 echo "=== Resetando banco de dados e executando seeds ==="
 docker compose -f docker-compose.dbreset.yml build
