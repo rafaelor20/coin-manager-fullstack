@@ -7,7 +7,7 @@ services:
     ports:
       - 5433:5432
     env_file:
-      - back-end/.env.development
+      - back-end/.env.compose
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     healthcheck:
@@ -26,7 +26,7 @@ services:
       postgres:
         condition: service_healthy
     env_file:
-      - back-end/.env.development
+      - back-end/.env.compose
 
   react:
     container_name: coin_manager_react
