@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FiKey, FiLock, FiCheckCircle, FiArrowLeft } from 'react-icons/fi';
 import { FaCoins } from 'react-icons/fa';
 
@@ -15,18 +15,26 @@ import {
   Title,
   Subtitle,
   FormSection,
-  LinksSection
+  LinksSection,
 } from '../../components/Auth';
 import Link from '../../components/Link';
 import useResetPassword from '../../hooks/api/useResetPassword';
 
 export default function ResetPassword() {
-  const [token, setToken] = useState('');
+  const [searchParams] = useSearchParams();
+  const [token, setToken] = useState(searchParams.get('token') || '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { loadingResetPassword, resetPassword } = useResetPassword();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const tokenFromUrl = searchParams.get('token');
+    if (tokenFromUrl) {
+      setToken(tokenFromUrl);
+    }
+  }, [searchParams]);
 
   async function submit(event) {
     event.preventDefault();
@@ -66,9 +74,7 @@ export default function ResetPassword() {
             <Title>
               Redefinir <span>Senha</span>
             </Title>
-            <Subtitle>
-              Insira o token recebido por e-mail e defina sua nova senha de acesso.
-            </Subtitle>
+            <Subtitle>Insira o token recebido por e-mail e defina sua nova senha de acesso.</Subtitle>
           </HeaderSection>
 
           <FormSection onSubmit={submit}>
@@ -99,13 +105,7 @@ export default function ResetPassword() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            <Button
-              type="submit"
-              variant="primary"
-              fullWidth
-              loading={loadingResetPassword}
-              icon={<FiCheckCircle />}
-            >
+            <Button type="submit" variant="primary" fullWidth loading={loadingResetPassword} icon={<FiCheckCircle />}>
               Confirmar Nova Senha
             </Button>
           </FormSection>
